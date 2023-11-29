@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="750.0" prefWidth="1174.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kursinis.prif4kursinis.fxControllers.AdminDashboardController">
+   <children>
+       <VBox alignment="TOP_LEFT" prefHeight="750.0" prefWidth="268.0" style="-fx-background-color: #333333;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+         <Pane prefHeight="257.0" prefWidth="257.0" />
+         <Button alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="60.0" mnemonicParsing="false" onAction="#dashboardButton" prefHeight="60.0" prefWidth="339.0" styleClass="dashBtn" text="Dashboard" textFill="WHITE">
+            <padding>
+               <Insets left="50.0" />
+            </padding></Button>
+         <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="60.0" mnemonicParsing="false" onAction="#loadOrderPane" prefHeight="60.0" prefWidth="339.0" styleClass="dashBtn" text="Orders" textFill="WHITE">
+            <padding>
+               <Insets left="50.0" />
+            </padding>
+         </Button>
+         <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="77.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="60.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="339.0" styleClass="dashBtn" text="Product catalogue" textFill="WHITE">
+            <padding>
+               <Insets left="50.0" />
+            </padding>
+         </Button>
+         <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="190.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="60.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="339.0" styleClass="dashBtn" text="Messages" textFill="WHITE">
+            <padding>
+               <Insets left="50.0" />
+            </padding>
+         </Button>
+         <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="144.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="60.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="339.0" styleClass="dashBtn" text="Users" textFill="WHITE">
+            <padding>
+               <Insets left="50.0" />
+            </padding>
+         </Button>
+         <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="211.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="60.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="339.0" styleClass="dashBtn" text="Settings" textFill="WHITE">
+            <padding>
+               <Insets left="50.0" />
+            </padding>
+         </Button>
+         <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="451.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="60.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="339.0" styleClass="dashBtn" text="Log out" textFill="WHITE">
+            <padding>
+               <Insets left="50.0" />
+            </padding>
+         </Button>
+           <!-- Add more buttons as needed -->
+       </VBox>
+      <Label layoutX="687.0" layoutY="31.0" text="TEXT">
+         <font>
+            <Font size="29.0" />
+         </font>
+      </Label>
+      <Pane fx:id="adminDashboardPane" layoutX="268.0" layoutY="108.0" prefHeight="642.0" prefWidth="907.0" />
+   </children>
+</AnchorPane>
