@@ -12,7 +12,7 @@ public class StartGui extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         //FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("login.fxml"));
-        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("admin-dashboard.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("mainWindow.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Shop");
         stage.setScene(scene);

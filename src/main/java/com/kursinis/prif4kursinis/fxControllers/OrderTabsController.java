@@ -1,4 +1,4 @@
 package com.kursinis.prif4kursinis.fxControllers;
 
-public class OrderTabWindowController {
+public class OrderTabsController {
 }
