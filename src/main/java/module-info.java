@@ -6,7 +6,6 @@ module com.kursinis.prif4kursinis {
     requires org.hibernate.orm.core;
     requires jakarta.persistence;
 
-
     opens com.kursinis.prif4kursinis to javafx.fxml;
     exports com.kursinis.prif4kursinis;
     opens com.kursinis.prif4kursinis.model to javafx.fxml, org.hibernate.orm.core;
@@ -14,5 +13,11 @@ module com.kursinis.prif4kursinis {
     opens com.kursinis.prif4kursinis.fxControllers to javafx.fxml;
     opens com.kursinis.prif4kursinis.fxControllers.tableviewparameters to javafx.base;
     exports com.kursinis.prif4kursinis.fxControllers;
-
+    exports com.kursinis.prif4kursinis.fxControllers.windowControllers;
+    opens com.kursinis.prif4kursinis.fxControllers.windowControllers to javafx.fxml;
+    exports com.kursinis.prif4kursinis.fxControllers.oldControllers;
+    opens com.kursinis.prif4kursinis.fxControllers.oldControllers to javafx.fxml;
+    exports com.kursinis.prif4kursinis.fxControllers.regLog;
+    opens com.kursinis.prif4kursinis.fxControllers.regLog to javafx.fxml;
+    opens com.kursinis.prif4kursinis.fxControllers.createControllers to javafx.fxml;
 }

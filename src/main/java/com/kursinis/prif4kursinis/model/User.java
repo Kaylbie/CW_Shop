@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 public abstract class User implements Serializable {
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
@@ -40,7 +41,6 @@ public abstract class User implements Serializable {
         this.password = password;
         this.birthDate = birthDate;
     }
-
 
     @Override
     public String toString() {

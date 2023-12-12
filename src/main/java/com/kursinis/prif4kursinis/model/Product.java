@@ -18,29 +18,26 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String title;
+    String code;
+    String price;
     String description;
+    String photoName;
+
     String manufacturer;
+    boolean isVisible;
     @ManyToOne
     Warehouse warehouse;
 
-    @ManyToOne
-    Cart cart;
+    //@ManyToOne
+    //Cart cart;
 
-    public Product(String title, String description) {
+    public Product(String title, String code, String price, String description, String photoName, String manufacturer, boolean isVisible) {
         this.title = title;
+        this.code=code;
+        this.price=price;
         this.description = description;
-    }
-
-    public Product(String title, String description, String manufacturer) {
-        this.title = title;
-        this.description = description;
+        this.photoName = photoName;
         this.manufacturer = manufacturer;
-    }
-
-    public Product(String title, String description, String manufacturer, Warehouse warehouse) {
-        this.title = title;
-        this.description = description;
-        this.manufacturer = manufacturer;
-        this.warehouse = warehouse;
+        this.isVisible = isVisible;
     }
 }
