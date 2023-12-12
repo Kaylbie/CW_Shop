@@ -20,7 +20,7 @@ public class MainWindowController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         mainWindowButtons.setVisible(true);
         orderPageButtons.setVisible(false);
-
+        productsPageButtons.setVisible(false);
     }
     @FXML
     public Pane adminDashboardPane;
@@ -28,10 +28,13 @@ public class MainWindowController implements Initializable {
     public Pane orderPageButtons;
     @FXML
     public VBox mainWindowButtons;
+    @FXML
+    public VBox productsPageButtons;
 
     private void loadPane(String paneName){
         adminDashboardPane.getChildren().clear();
-        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("/com/kursinis/prif4kursinis/"+paneName+".fxml"));
+        //FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("com/kursinis/prif4kursinis/" + paneName + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("src/main/resources/com/kursinis/prif4kursinis/usersWindow.fxml"));
         try {
             adminDashboardPane.getChildren().add(fxmlLoader.load());
         } catch (IOException e) {
@@ -39,25 +42,37 @@ public class MainWindowController implements Initializable {
         }
     }
     public void loadOrderPane(ActionEvent actionEvent){
-        loadPane("order-window");
+        loadPane("orderWindow");
         orderPageButtons.setVisible(true);
         mainWindowButtons.setVisible(false);
+        productsPageButtons.setVisible(false);
 
     }
     public void loadDashboardPane(ActionEvent actionEvent) {
-        loadPane("admin-dashboard-window");
+        //loadPane("admin-dashboard-window");
         mainWindowButtons.setVisible(true);
         orderPageButtons.setVisible(false);
+        productsPageButtons.setVisible(false);
 
     }
     private void loadDashboardPane(){
         loadPane("admin-dashboard-window");
         mainWindowButtons.setVisible(true);
         orderPageButtons.setVisible(false);
+        productsPageButtons.setVisible(false);
     }
 
     public void loadProductCataloguePane(ActionEvent actionEvent) {
-        loadPane("product-catalogue-window");
+        loadPane("productsWindow");
+        productsPageButtons.setVisible(true);
+        mainWindowButtons.setVisible(false);
+        orderPageButtons.setVisible(false);
+    }
+    public void loadUsersPane(ActionEvent actionEvent) {
+        loadPane("usersWindow");
+        productsPageButtons.setVisible(true);
+        mainWindowButtons.setVisible(false);
+        orderPageButtons.setVisible(false);
     }
 
     public void orderMenuBackButton(MouseEvent mouseEvent) {
