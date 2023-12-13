@@ -4,6 +4,7 @@ import com.kursinis.prif4kursinis.StartGui;
 import com.kursinis.prif4kursinis.fxControllers.windowControllers.ProductUpdateCallback;
 import com.kursinis.prif4kursinis.hibernateControllers.CustomHib;
 import com.kursinis.prif4kursinis.hibernateControllers.UserHib;
+import com.kursinis.prif4kursinis.model.Product;
 import com.kursinis.prif4kursinis.model.SimpleProduct;
 import com.kursinis.prif4kursinis.model.User;
 import jakarta.persistence.EntityManagerFactory;
@@ -11,10 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -44,11 +42,30 @@ public class CreateProductController implements Initializable {
     private String selectedImagePath;
     private EntityManagerFactory entityManagerFactory;
     private CustomHib customHib;
+    @FXML private Label titleLabel;
+    @FXML private Button createProductButton;
 
+    private Product productToEdit;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         entityManagerFactory = StartGui.getEntityManagerFactory();
         customHib = new CustomHib(entityManagerFactory);
+    }
+    public void setData(EntityManagerFactory entityManagerFactory, Product productToEdit) {
+        this.entityManagerFactory = entityManagerFactory;
+        this.productToEdit = productToEdit;
+        if (productToEdit != null) {
+            loadProductData(productToEdit);
+        }
+    }
+    private void loadProductData(Product product) {
+        titleLabel.setText("Edit Product");
+        createProductButton.setText("Save Product");
+        productNameField.setText(product.getTitle());
+        productCodeField.setText(product.getCode()); // Adjust these getters to your Product class
+        productPriceField.setText(String.valueOf(product.getPrice()));
+        productDescriptionField.setText(product.getDescription());
+        imagePathLabel.setText(product.getPhotoName());
     }
     public void setMainController(ProductUpdateCallback productUpdateCallback) {
         this.productUpdateCallback = productUpdateCallback;
@@ -73,24 +90,39 @@ public class CreateProductController implements Initializable {
         alert.showAndWait();
     }
     public void createProduct(ActionEvent actionEvent) {
-        if (selectedImagePath != null && !selectedImagePath.isEmpty()) {
-            try {
-                String destPath = "src/main/resources/com/kursinis/prif4kursinis/images/" + new File(selectedImagePath).getName();
-                Files.copy(Paths.get(selectedImagePath), Paths.get(destPath), StandardCopyOption.REPLACE_EXISTING);
-                customHib.create(new SimpleProduct(productNameField.getText(), productCodeField.getText(), productPriceField.getText(), productDescriptionField.getText(), new File(selectedImagePath).getName()));
+        try {
+            String imagePath = selectedImagePath != null && !selectedImagePath.isEmpty() ? new File(selectedImagePath).getName() : null;
 
-                // Now, create your product here using the destPath for the image
-                // For example: Product newProduct = new Product(..., destPath);
+            if (productToEdit == null) {
+                // Creating a new product
+                String destPath = "src/main/resources/com/kursinis/prif4kursinis/images/" + imagePath;
+                if (imagePath != null) {
+                    Files.copy(Paths.get(selectedImagePath), Paths.get(destPath), StandardCopyOption.REPLACE_EXISTING);
+                }
+                SimpleProduct newProduct = new SimpleProduct(productNameField.getText(), productCodeField.getText(), productPriceField.getText(), productDescriptionField.getText(), imagePath);
+                customHib.create(newProduct);
                 showAlert("Success", "Product created successfully.");
-                // Save the newProduct to your database or wherever it needs to be stored
-                Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                stage.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-                showAlert("Error", "Failed to save the image.");
+            } else {
+                // Editing an existing product
+                if (imagePath != null) {
+                    String destPath = "src/main/resources/com/kursinis/prif4kursinis/images/" + imagePath;
+                    Files.copy(Paths.get(selectedImagePath), Paths.get(destPath), StandardCopyOption.REPLACE_EXISTING);
+                    productToEdit.setPhotoName(imagePath);
+                }
+                productToEdit.setTitle(productNameField.getText());
+                productToEdit.setCode(productCodeField.getText());
+                productToEdit.setPrice(productPriceField.getText());
+                productToEdit.setDescription(productDescriptionField.getText());
+                customHib.update(productToEdit);
+                showAlert("Success", "Product updated successfully.");
             }
-        } else {
-            // Handle the case where no image was selected
+
+            // Close the stage
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            stage.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to save the image.");
         }
     }
 
