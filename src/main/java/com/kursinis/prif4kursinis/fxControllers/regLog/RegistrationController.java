@@ -89,7 +89,7 @@ public class RegistrationController implements Initializable {
 
     public void createUser() {
         userHib = new UserHib(entityManagerFactory);
-        User user = new Customer(loginField.getText(), passwordField.getText(), null, nameField.getText(), surnameField.getText(), null, null);
+        User user = new Customer(loginField.getText(), passwordField.getText(), null, nameField.getText(), surnameField.getText(), null);
         userHib.createUser(user);
 //        if (customerCheckbox.isSelected()) {
 //            //User user = new Customer(loginField.getText(), passwordField.getText(), birthDateField.getValue(), nameField.getText(), surnameField.getText(), addressField.getText(), cardNoField.getText());

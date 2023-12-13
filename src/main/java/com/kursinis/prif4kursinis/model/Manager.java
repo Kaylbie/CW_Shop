@@ -19,21 +19,18 @@ import java.util.List;
 public class Manager extends User {
 
     private String employeeId;
-    private String medCertificate;
     private LocalDate employmentDate;
     private boolean isAdmin;
     @ManyToMany
     private List<Warehouse> worksAtWarehouse;
 
-    public Manager(String login, String password, LocalDate birthDate, String name, String surname, String employeeId, String medCertificate, LocalDate employmentDate, boolean isAdmin) {
-        super(login, password, birthDate, name, surname);
+    public Manager(String login, String password, String name, String surname, String employeeId, LocalDate employmentDate) {
+        super(login, password, name, surname);
         this.employeeId = employeeId;
-        this.medCertificate = medCertificate;
         this.employmentDate = employmentDate;
-        this.isAdmin = isAdmin;
     }
 
-    public Manager(String login, String password, LocalDate birthDate) {
+    public Manager(String login, String password) {
 
     }
 

@@ -23,25 +23,19 @@ public abstract class User implements Serializable {
     @Column(unique = true)
     String login;
     String password;
-    LocalDate birthDate;
     String name;
     String surname;
-
-    public User(String login, String password, LocalDate birthDate, String name, String surname) {
+    public User(String login, String password, String name, String surname) {
         this.login = login;
         this.password = password;
-        this.birthDate = birthDate;
         this.name = name;
         this.surname = surname;
     }
-
-    public User(int id, String login, String password, LocalDate birthDate) {
+    public User(int id, String login, String password) {
         this.id = id;
         this.login = login;
         this.password = password;
-        this.birthDate = birthDate;
     }
-
     @Override
     public String toString() {
         return "User{" +
