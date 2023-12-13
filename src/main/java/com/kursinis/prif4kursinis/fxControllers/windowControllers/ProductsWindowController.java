@@ -65,7 +65,32 @@ public class ProductsWindowController implements Initializable, ProductUpdateCal
     public void onSearchQueryChanged(String query) {
         refreshNodes(query);
     }
+    @Override
+    public void onVisibilityChanged(String visibility) {
+        refreshNodesWithVisibility(visibility);
+    }
+    private void refreshNodesWithVisibility(String visibility) {
+        productsVBox.getChildren().clear();
+        GenericHib productHib = new GenericHib(entityManagerFactory);
+        List<Product> productList = productHib.getAllRecords(Product.class);
 
+        for (Product product : productList) {
+            if (visibility.equals("All") ||
+                    (visibility.equals("Visible") && product.isVisible()) ||
+                    (visibility.equals("Invisible") && !product.isVisible())) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(StartGui.class.getResource("nodes/productNode.fxml"));
+                    Node node = loader.load();
+                    ProductNodeController controller = loader.getController();
+                    controller.setProductData(product);
+                    controller.setUpdateCallback(this);
+                    productsVBox.getChildren().add(node);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
     private void refreshNodes(String query) {
         productsVBox.getChildren().clear();
         GenericHib productHib = new GenericHib(entityManagerFactory);
