@@ -80,7 +80,6 @@ public class CreateProductController implements Initializable {
         if (selectedFile != null) {
             selectedImagePath = selectedFile.getAbsolutePath();
             imagePathLabel.setText(selectedFile.getName());
-
         }
     }
     private void showAlert(String title, String content) {

@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ProductsWindowController implements Initializable, ProductUpdateCallback {
+public class ProductsWindowController implements Initializable, ProductUpdateCallback, ProductSearchListener {
 
     @FXML
     public ScrollPane productsScrollPane;
@@ -29,35 +29,64 @@ public class ProductsWindowController implements Initializable, ProductUpdateCal
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         entityManagerFactory = StartGui.getEntityManagerFactory();
-        refreshNodes();
+        refreshNodes(null);
     }
     @Override
     public void onProductUpdated() {
         refreshNodes();
     }
-    private void refreshNodes() {
-        productsVBox.getChildren().clear();
+//    private void refreshNodes() {
+//        productsVBox.getChildren().clear();
+//
+//        // Use GenericHib to get product data
+//        GenericHib productHib = new GenericHib(entityManagerFactory);
+//        List<Product> productList = productHib.getAllRecords(Product.class);
+//
+//        for (Product product : productList) {
+//            try {
+//                FXMLLoader loader = new FXMLLoader(StartGui.class.getResource("nodes/productNode.fxml"));
+//                Node node = loader.load();
+//                ProductNodeController controller = loader.getController();
+//                controller.setProductData(product);
+//                controller.setUpdateCallback(this);
+//                productsVBox.getChildren().add(node);
+//            } catch (IOException e) {
+//                e.printStackTrace(); // Handle exceptions appropriately
+//            }
+//        }
+//    }
 
-        // Use GenericHib to get product data
+
+    public void updateProductTabs(MouseEvent mouseEvent) {
+        refreshNodes(null);
+    }
+
+    @Override
+    public void onSearchQueryChanged(String query) {
+        refreshNodes(query);
+    }
+
+    private void refreshNodes(String query) {
+        productsVBox.getChildren().clear();
         GenericHib productHib = new GenericHib(entityManagerFactory);
         List<Product> productList = productHib.getAllRecords(Product.class);
 
         for (Product product : productList) {
-            try {
-                FXMLLoader loader = new FXMLLoader(StartGui.class.getResource("nodes/productNode.fxml"));
-                Node node = loader.load();
-                ProductNodeController controller = loader.getController();
-                controller.setProductData(product);
-                controller.setUpdateCallback(this);
-                productsVBox.getChildren().add(node);
-            } catch (IOException e) {
-                e.printStackTrace(); // Handle exceptions appropriately
+            if (query == null || product.getTitle().toLowerCase().contains(query.toLowerCase())) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(StartGui.class.getResource("nodes/productNode.fxml"));
+                    Node node = loader.load();
+                    ProductNodeController controller = loader.getController();
+                    controller.setProductData(product);
+                    controller.setUpdateCallback(this);
+                    productsVBox.getChildren().add(node);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
-
-
-    public void updateProductTabs(MouseEvent mouseEvent) {
-        refreshNodes();
+    private void refreshNodes() {
+        refreshNodes(null);
     }
 }

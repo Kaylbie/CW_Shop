@@ -2,6 +2,7 @@ package com.kursinis.prif4kursinis.fxControllers;
 
 import com.kursinis.prif4kursinis.StartGui;
 import com.kursinis.prif4kursinis.fxControllers.createControllers.CreateProductController;
+import com.kursinis.prif4kursinis.fxControllers.windowControllers.ProductsWindowController;
 import com.kursinis.prif4kursinis.hibernateControllers.CustomHib;
 import com.kursinis.prif4kursinis.model.User;
 import jakarta.persistence.EntityManagerFactory;
@@ -13,6 +14,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -40,6 +43,9 @@ public class MainWindowController implements Initializable {
     private User currentUser;
     private EntityManagerFactory entityManagerFactory;
     private CustomHib customHib;
+    private ProductsWindowController productsWindowController;
+    @FXML
+    private TextField productSearchField;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -79,10 +85,20 @@ public class MainWindowController implements Initializable {
     }
 
     public void loadProductCataloguePane(ActionEvent actionEvent) {
-        loadPane("productsWindow");
+        adminDashboardPane.getChildren().clear();
+        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("window/productsWindow.fxml"));
+
+        try {
+            adminDashboardPane.getChildren().add(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //loadPane("productsWindow");
         productsPageButtons.setVisible(true);
         mainWindowButtons.setVisible(false);
         orderPageButtons.setVisible(false);
+        ProductsWindowController controller = fxmlLoader.getController();
+        setProductsWindowController(controller);
     }
     public void loadUsersPane(ActionEvent actionEvent) {
         loadPane("usersWindow");
@@ -141,4 +157,15 @@ public class MainWindowController implements Initializable {
     private EntityManagerFactory setWindowData(){
         return entityManagerFactory;
     }
+    public void setProductsWindowController(ProductsWindowController controller) {
+        this.productsWindowController = controller;
+    }
+
+    public void findProductOnKeyPressed(KeyEvent keyEvent) {
+        if (productsWindowController != null) {
+            String query = ((TextField) keyEvent.getSource()).getText();
+            productsWindowController.onSearchQueryChanged(query);
+        }
+    }
+
 }

@@ -32,6 +32,8 @@ public class ProductNodeController implements Initializable {
     private ImageView productImageView;
     @FXML
     private Button deleteButton;
+    @FXML
+    private Button visibilityButton;
     private ProductUpdateCallback updateCallback;
     private Product product;
     private EntityManagerFactory entityManagerFactory;
@@ -45,15 +47,21 @@ public class ProductNodeController implements Initializable {
         this.updateCallback = updateCallback;
     }
     public void setProductData(Product product) {
+
         this.product=product;
         productNameLabel.setText(product.getTitle());
         productCodeLabel.setText(product.getCode()); // Replace getCode() with your actual method
         productPriceLabel.setText("Price: $" + product.getPrice()); // Replace getPrice() with your actual method
-        // Set the image for productImageView if needed
         String imagePath = "/com/kursinis/prif4kursinis/images/" + product.getPhotoName(); // Replace getImageName() with your actual method
         if (imagePath != null && !imagePath.isEmpty()) {
             Image image = new Image(getClass().getResourceAsStream(imagePath));
             productImageView.setImage(image);
+        }
+        if(product.isVisible()){
+            visibilityButton.setText("Visible");
+        }
+        else{
+            visibilityButton.setText("Invisible");
         }
     }
 
@@ -71,11 +79,9 @@ public class ProductNodeController implements Initializable {
 
             CreateProductController createProductController = fxmlLoader.getController();
             createProductController.setData(entityManagerFactory, product); // Pass product to edit
-
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Edit Product");
-
             Scene scene = new Scene(root);
             stage.setScene(scene);
 
@@ -85,6 +91,17 @@ public class ProductNodeController implements Initializable {
         }
     }
     public void handleVisibilityAction(ActionEvent actionEvent) {
+        CustomHib customHib = new CustomHib(StartGui.getEntityManagerFactory());
+        if(product.isVisible()){
+            product.setVisible(false);
+            visibilityButton.setText("Invisible");
+            customHib.update(product);
+        }
+        else{
+            product.setVisible(true);
+            visibilityButton.setText("Visible");
+            customHib.update(product);
+        }
     }
 
 
