@@ -237,6 +237,14 @@ public class MainWindowController implements Initializable {
     }
 
     public void loadCustomerCatalogue(ActionEvent actionEvent) {
+        adminDashboardPane.getChildren().clear();
+        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("userWindow/userCatalogueWindow.fxml"));
+
+        try {
+            adminDashboardPane.getChildren().add(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void loadCustomerOrder(ActionEvent actionEvent) {

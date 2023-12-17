@@ -20,4 +20,6 @@ module com.kursinis.prif4kursinis {
     exports com.kursinis.prif4kursinis.fxControllers.regLog;
     opens com.kursinis.prif4kursinis.fxControllers.regLog to javafx.fxml;
     opens com.kursinis.prif4kursinis.fxControllers.createControllers to javafx.fxml;
+    exports com.kursinis.prif4kursinis.fxControllers.userWindowControllers;
+    opens com.kursinis.prif4kursinis.fxControllers.userWindowControllers to javafx.fxml;
 }
