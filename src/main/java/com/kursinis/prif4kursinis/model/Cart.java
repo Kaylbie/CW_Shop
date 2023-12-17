@@ -21,6 +21,13 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private LocalDate dateCreated;
+    private String status;
+    private double total;
+
+    @ManyToOne
+    @JoinColumn(name = "manager_id")
+
+    private Manager responsibleManager;
     @OneToMany(mappedBy = "", cascade = CascadeType.ALL, orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Product> itemsInCart;

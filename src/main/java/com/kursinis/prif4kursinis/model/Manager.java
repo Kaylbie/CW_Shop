@@ -2,6 +2,7 @@ package com.kursinis.prif4kursinis.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,10 +25,14 @@ public class Manager extends User {
     @ManyToMany
     private List<Warehouse> worksAtWarehouse;
 
-    public Manager(String login, String password, String name, String surname, String employeeId, LocalDate employmentDate) {
+    @OneToMany(mappedBy = "responsibleManager")
+    private List<Cart> carts;
+
+    public Manager(String login, String password, String name, String surname, String employeeId, LocalDate employmentDate, boolean isAdmin) {
         super(login, password, name, surname);
         this.employeeId = employeeId;
         this.employmentDate = employmentDate;
+        this.isAdmin = isAdmin;
     }
 
     public Manager(String login, String password) {
@@ -37,5 +42,9 @@ public class Manager extends User {
     @Override
     public String toString() {
         return "Free text, ka noriu";
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
     }
 }

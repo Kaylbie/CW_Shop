@@ -50,8 +50,7 @@ public class LoginController implements Initializable {
     public void validateAndConnect() throws IOException {
         userHib = new UserHib(entityManagerFactory);
         User user = userHib.getUserByCredentials(loginField.getText(), passwordField.getText()); //get from text fields
-        //User user = userHib.getUserByCredentials("a", "a");
-        //Cia galim optimizuoti, kol kas paliksiu kaip pvz su userHib
+
         if (user != null) {
             FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("mainWindow.fxml"));
             Parent parent = fxmlLoader.load();

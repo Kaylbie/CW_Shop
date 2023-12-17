@@ -28,8 +28,8 @@ public class Product implements Serializable {
     @ManyToOne
     Warehouse warehouse;
 
-    //@ManyToOne
-    //Cart cart;
+    @ManyToOne
+    Cart cart;
 
     public Product(String title, String code, String price, String description, String photoName, String manufacturer, boolean isVisible) {
         this.title = title;

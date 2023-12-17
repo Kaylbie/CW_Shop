@@ -4,6 +4,8 @@ import com.kursinis.prif4kursinis.StartGui;
 import com.kursinis.prif4kursinis.fxControllers.createControllers.CreateProductController;
 import com.kursinis.prif4kursinis.fxControllers.windowControllers.ProductsWindowController;
 import com.kursinis.prif4kursinis.hibernateControllers.CustomHib;
+import com.kursinis.prif4kursinis.model.Customer;
+import com.kursinis.prif4kursinis.model.Manager;
 import com.kursinis.prif4kursinis.model.User;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.event.ActionEvent;
@@ -11,8 +13,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -35,6 +39,7 @@ public class MainWindowController implements Initializable {
     public Pane orderPageButtons;
     @FXML
     public VBox mainWindowButtons;
+    @FXML public VBox userWindowButtons;
     @FXML
     public VBox productsPageButtons;
     @FXML
@@ -48,12 +53,24 @@ public class MainWindowController implements Initializable {
     @FXML
     private TextField productSearchField;
     @FXML private ChoiceBox<String> visibilityChoiceBox;
+    @FXML
+    private Button logoutButton;
 
+    @FXML private Button logoutButton1;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         entityManagerFactory = StartGui.getEntityManagerFactory();
-        loadDashboardPane();
+        loadEmpty();
+        //
     }
+
+    private void loadEmpty() {
+        mainWindowButtons.setVisible(false);
+        orderPageButtons.setVisible(false);
+        productsPageButtons.setVisible(false);
+        userWindowButtons.setVisible(false);
+    }
+
     private void loadPane(String paneName){
         adminDashboardPane.getChildren().clear();
         FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("window/" + paneName + ".fxml"));
@@ -70,13 +87,14 @@ public class MainWindowController implements Initializable {
         orderPageButtons.setVisible(true);
         mainWindowButtons.setVisible(false);
         productsPageButtons.setVisible(false);
-
+        userWindowButtons.setVisible(false);
     }
     public void loadDashboardPane(ActionEvent actionEvent) {
         loadPane("dashboardWindow");
         mainWindowButtons.setVisible(true);
         orderPageButtons.setVisible(false);
         productsPageButtons.setVisible(false);
+        userWindowButtons.setVisible(false);
 
     }
     private void loadDashboardPane(){
@@ -84,6 +102,7 @@ public class MainWindowController implements Initializable {
         mainWindowButtons.setVisible(true);
         orderPageButtons.setVisible(false);
         productsPageButtons.setVisible(false);
+        userWindowButtons.setVisible(false);
     }
 
     public void loadProductCataloguePane(ActionEvent actionEvent) {
@@ -107,6 +126,7 @@ public class MainWindowController implements Initializable {
         productsPageButtons.setVisible(true);
         mainWindowButtons.setVisible(false);
         orderPageButtons.setVisible(false);
+        userWindowButtons.setVisible(false);
     }
     public void orderMenuBackButton(MouseEvent mouseEvent) {
         loadDashboardPane();
@@ -121,6 +141,9 @@ public class MainWindowController implements Initializable {
     }
 
     public void logOut(ActionEvent actionEvent) {
+        Stage stage = (Stage) logoutButton.getScene().getWindow();
+        stage.close();
+        openLoginWindow();
     }
 
     public void createNewProduct(ActionEvent actionEvent) {
@@ -148,9 +171,30 @@ public class MainWindowController implements Initializable {
 
     public void setData(User currentUser) {
         this.currentUser = currentUser;
-        //limitAccess();
+        limitAccess();
         loadData();
     }
+    private void loadCustomerWindows(){
+        userWindowButtons.setVisible(true);
+    }
+    private void loadManagerAdminWindows(){
+        loadDashboardPane();
+    }
+    private void loadManagerWindows(){
+
+    }
+    private void limitAccess() {
+        if(currentUser instanceof Customer){
+            loadCustomerWindows();
+        }
+        else if(currentUser instanceof Manager && ((Manager) currentUser).isAdmin()){
+            loadManagerAdminWindows();
+        }
+        else{
+            loadManagerWindows();
+        }
+    }
+
     private void loadData(){
         nameSurnameLabel.setText(currentUser.getName()+" "+currentUser.getSurname());
         uidLabel.setText("UID: "+currentUser.getId());
@@ -175,5 +219,29 @@ public class MainWindowController implements Initializable {
             String visibility = visibilityChoiceBox.getValue();
             productsWindowController.onVisibilityChanged(visibility);
         }
+    }
+    private void openLoginWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(StartGui.class.getResource("login.fxml")); // Update with your login FXML file path
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Login");
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadCustomerCart(ActionEvent actionEvent) {
+    }
+
+    public void loadCustomerCatalogue(ActionEvent actionEvent) {
+    }
+
+    public void loadCustomerOrder(ActionEvent actionEvent) {
+    }
+
+    public void loadCustomerSettings(ActionEvent actionEvent) {
     }
 }

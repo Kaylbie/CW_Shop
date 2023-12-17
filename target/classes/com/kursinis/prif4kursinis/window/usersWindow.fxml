@@ -8,14 +8,12 @@
     <children>
         <TableView fx:id="usersTableView" layoutX="33.0" layoutY="275.0" prefHeight="445.0" prefWidth="834.0" style="-fx-table-cell-border-color: transparent; -fx-text-fill: black; -fx-font-size: 14;">
             <columns>
-                <TableColumn fx:id="idColumn" prefWidth="75.0" style="-fx-text-fill: white;" text="ID" />
-                <TableColumn fx:id="loginColumn" prefWidth="150.0" style="-fx-text-fill: white;" text="Login" />
-                <TableColumn fx:id="nameColumn" prefWidth="150.0" style="-fx-text-fill: white;" text="Name" />
-                <TableColumn fx:id="surnameColumn" prefWidth="150.0" style="-fx-text-fill: white;" text="Surname" />
-                <TableColumn fx:id="typeColumn" prefWidth="150.0" style="-fx-text-fill: white;" text="Type" />
+                <TableColumn fx:id="idColumn" prefWidth="75.0" style="-fx-text-fill: black;" text="ID" />
+                <TableColumn fx:id="loginColumn" prefWidth="150.0" style="-fx-text-fill: black;" text="Login" />
+                <TableColumn fx:id="nameColumn" prefWidth="150.0" style="-fx-text-fill: black;" text="Name" />
+                <TableColumn fx:id="surnameColumn" prefWidth="150.0" style="-fx-text-fill: black;" text="Surname" />
+                <TableColumn fx:id="typeColumn" prefWidth="150.0" style="-fx-text-fill: black;" text="Type" />
                 <TableColumn fx:id="editColumn" prefWidth="150.0" text="Edit" />
-
-                <!-- Add other columns as needed -->
             </columns>
         </TableView>
 
