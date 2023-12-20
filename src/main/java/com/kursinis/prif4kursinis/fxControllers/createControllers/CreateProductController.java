@@ -89,6 +89,7 @@ public class CreateProductController implements Initializable {
         alert.showAndWait();
     }
     public void createProduct(ActionEvent actionEvent) {
+        double price;
         try {
             String imagePath = selectedImagePath != null && !selectedImagePath.isEmpty() ? new File(selectedImagePath).getName() : null;
 
@@ -98,9 +99,15 @@ public class CreateProductController implements Initializable {
                 if (imagePath != null) {
                     Files.copy(Paths.get(selectedImagePath), Paths.get(destPath), StandardCopyOption.REPLACE_EXISTING);
                 }
-                SimpleProduct newProduct = new SimpleProduct(productNameField.getText(), productCodeField.getText(), productPriceField.getText(), productDescriptionField.getText(), imagePath);
-                customHib.create(newProduct);
-                showAlert("Success", "Product created successfully.");
+                try {
+                    price = Double.parseDouble(productPriceField.getText());
+                    SimpleProduct newProduct = new SimpleProduct(productNameField.getText(), productCodeField.getText(), price, productDescriptionField.getText(), imagePath);
+                    customHib.create(newProduct);
+                    showAlert("Success", "Product created successfully.");
+                } catch (NumberFormatException e) {
+                    showAlert("Invalid Input", "Please enter a valid price.");
+                }
+
             } else {
                 // Editing an existing product
                 if (imagePath != null) {
@@ -110,7 +117,13 @@ public class CreateProductController implements Initializable {
                 }
                 productToEdit.setTitle(productNameField.getText());
                 productToEdit.setCode(productCodeField.getText());
-                productToEdit.setPrice(productPriceField.getText());
+                try {
+                    price = Double.parseDouble(productPriceField.getText());
+                    productToEdit.setPrice(price);
+                } catch (NumberFormatException e) {
+                    showAlert("Invalid Input", "Please enter a valid price.");
+                }
+                //productToEdit.setPrice(productPriceField.getText());
                 productToEdit.setDescription(productDescriptionField.getText());
                 customHib.update(productToEdit);
                 showAlert("Success", "Product updated successfully.");

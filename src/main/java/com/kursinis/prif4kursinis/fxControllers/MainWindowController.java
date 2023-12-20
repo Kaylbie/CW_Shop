@@ -2,6 +2,9 @@ package com.kursinis.prif4kursinis.fxControllers;
 
 import com.kursinis.prif4kursinis.StartGui;
 import com.kursinis.prif4kursinis.fxControllers.createControllers.CreateProductController;
+import com.kursinis.prif4kursinis.fxControllers.userWindowControllers.UserCartWindowController;
+import com.kursinis.prif4kursinis.fxControllers.userWindowControllers.UserCatalogueWindowController;
+import com.kursinis.prif4kursinis.fxControllers.userWindowControllers.UserOrdersWindowController;
 import com.kursinis.prif4kursinis.fxControllers.windowControllers.ProductsWindowController;
 import com.kursinis.prif4kursinis.hibernateControllers.CustomHib;
 import com.kursinis.prif4kursinis.model.Customer;
@@ -234,20 +237,43 @@ public class MainWindowController implements Initializable {
     }
 
     public void loadCustomerCart(ActionEvent actionEvent) {
-    }
-
-    public void loadCustomerCatalogue(ActionEvent actionEvent) {
-        adminDashboardPane.getChildren().clear();
-        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("userWindow/userCatalogueWindow.fxml"));
-
+        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("userWindow/userCartWindow.fxml"));
         try {
+            adminDashboardPane.getChildren().clear();
             adminDashboardPane.getChildren().add(fxmlLoader.load());
-        } catch (IOException e) {
+            UserCartWindowController cartController = fxmlLoader.getController();
+            cartController.setCurrentUser(currentUser);
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    public void loadCustomerCatalogue(ActionEvent actionEvent) {
+        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("userWindow/userCatalogueWindow.fxml"));
+        try {
+            adminDashboardPane.getChildren().clear();
+            adminDashboardPane.getChildren().add(fxmlLoader.load());
+            UserCatalogueWindowController catalogueController = fxmlLoader.getController();
+            catalogueController.setCurrentUser(currentUser);
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void loadCustomerOrder(ActionEvent actionEvent) {
+        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("userWindow/userOrdersWindow.fxml"));
+        try {
+            adminDashboardPane.getChildren().clear();
+            adminDashboardPane.getChildren().add(fxmlLoader.load());
+            UserOrdersWindowController ordersController = fxmlLoader.getController();
+            ordersController.setCurrentUser(currentUser);
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void loadCustomerSettings(ActionEvent actionEvent) {

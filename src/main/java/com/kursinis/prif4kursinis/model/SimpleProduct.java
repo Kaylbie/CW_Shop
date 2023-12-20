@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 public class SimpleProduct extends Product {
-    public SimpleProduct(String title, String code,String price, String description, String photoName) {
+    public SimpleProduct(String title, String code,double price, String description, String photoName) {
         super(title, code, price, description, photoName, "NO", true);
     }
 }

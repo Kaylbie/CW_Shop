@@ -1,5 +1,6 @@
 package com.kursinis.prif4kursinis.model;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +10,6 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,23 +17,20 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Cart {
+public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private LocalDate dateCreated;
-    private String status;
-    private double total;
-    private int itemCount;
 
     @ManyToOne
-    @JoinColumn(name = "manager_id")
-    private Manager responsibleManager;
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "product_id")
+    private Product product;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<CartItem> items = new ArrayList<>();
+    private int quantity;
+
+
 }

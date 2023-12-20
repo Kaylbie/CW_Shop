@@ -5,6 +5,7 @@ import com.kursinis.prif4kursinis.hibernateControllers.CustomHib;
 import com.kursinis.prif4kursinis.hibernateControllers.UserHib;
 import com.kursinis.prif4kursinis.model.Customer;
 import com.kursinis.prif4kursinis.model.Manager;
+import com.kursinis.prif4kursinis.model.Product;
 import com.kursinis.prif4kursinis.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -116,4 +117,6 @@ public class EditUserWindowController implements Initializable {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
     }
+
+
 }

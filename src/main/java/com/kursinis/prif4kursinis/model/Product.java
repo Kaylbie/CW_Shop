@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,7 +21,7 @@ public class Product implements Serializable {
     int id;
     String title;
     String code;
-    String price;
+    double price;
     String description;
     String photoName;
 
@@ -28,10 +30,11 @@ public class Product implements Serializable {
     @ManyToOne
     Warehouse warehouse;
 
-    @ManyToOne
-    Cart cart;
 
-    public Product(String title, String code, String price, String description, String photoName, String manufacturer, boolean isVisible) {
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private List<Comment> comments;
+
+    public Product(String title, String code, double price, String description, String photoName, String manufacturer, boolean isVisible) {
         this.title = title;
         this.code=code;
         this.price=price;
@@ -39,5 +42,18 @@ public class Product implements Serializable {
         this.photoName = photoName;
         this.manufacturer = manufacturer;
         this.isVisible = isVisible;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

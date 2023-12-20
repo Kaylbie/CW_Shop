@@ -253,11 +253,11 @@ public class MainShopController implements Initializable {
         commentListField.getItems().addAll(customHib.getAllRecords(Comment.class));
     }
 
-    public void createComment() {
-        Comment comment = new Comment(commentTitleField.getText(), commentBodyField.getText());
-        customHib.create(comment);
-        loadCommentList();
-    }
+//    public void createComment() {
+//        Comment comment = new Comment(commentTitleField.getText(), commentBodyField.getText(), product);
+//        customHib.create(comment);
+//        loadCommentList();
+//    }
 
 
     public void updateComment() {

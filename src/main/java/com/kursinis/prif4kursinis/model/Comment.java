@@ -1,15 +1,13 @@
 package com.kursinis.prif4kursinis.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,14 +22,41 @@ public class Comment {
     private String commentBody;
     private LocalDate dateCreated;
 
-    public Comment(String commentTitle, String commentBody) {
+    @ManyToOne
+    private Comment parentComment;
+
+    // One-to-many relationship for replies
+    @OneToMany(mappedBy = "parentComment", fetch = FetchType.EAGER)
+    private List<Comment> replies;
+
+    @ManyToOne
+    private Product product;
+
+    // Constructors, getters, setters...
+
+    public List<Comment> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<Comment> replies) {
+        this.replies = replies;
+    }
+
+    public Comment(String commentTitle, String commentBody, Product product) {
         this.commentTitle = commentTitle;
         this.commentBody = commentBody;
         this.dateCreated = LocalDate.now();
+        this.product=product;
+    }
+    public Product getProduct() {
+        return product;
     }
 
+    public void setProduct(Product product) {
+        this.product = product;
+    }
     @Override
     public String toString() {
-        return commentTitle + ":" + dateCreated;
+        return commentTitle + ": " + dateCreated;
     }
 }
