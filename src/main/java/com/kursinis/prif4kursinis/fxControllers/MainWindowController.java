@@ -1,7 +1,6 @@
 package com.kursinis.prif4kursinis.fxControllers;
 
 import com.kursinis.prif4kursinis.StartGui;
-import com.kursinis.prif4kursinis.fxControllers.createControllers.CreateProductController;
 import com.kursinis.prif4kursinis.fxControllers.userWindowControllers.UserCartWindowController;
 import com.kursinis.prif4kursinis.fxControllers.userWindowControllers.UserCatalogueWindowController;
 import com.kursinis.prif4kursinis.fxControllers.userWindowControllers.UserOrdersWindowController;
@@ -17,7 +16,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -54,11 +52,16 @@ public class MainWindowController implements Initializable {
     private EntityManagerFactory entityManagerFactory;
     private CustomHib customHib;
     private ProductsWindowController productsWindowController;
+    private OrderWindowController orderWindowController;
     @FXML
     private TextField productSearchField;
+    private String currentQuery=null;
     @FXML private ChoiceBox<String> visibilityChoiceBox;
     @FXML
     private Button logoutButton;
+
+    @FXML
+    private ChoiceBox<String> statusChoiceBox;
 
     @FXML private Button logoutButton1;
     @Override
@@ -97,11 +100,13 @@ public class MainWindowController implements Initializable {
         }
         OrderWindowController controller = fxmlLoader.getController();
         controller.setOrdersData(currentUser);
-        //setProductsWindowController(controller);
+        setOrderWindowController(controller);
         orderPageButtons.setVisible(true);
         mainWindowButtons.setVisible(false);
         productsPageButtons.setVisible(false);
         userWindowButtons.setVisible(false);
+        statusChoiceBox.getItems().addAll("Pending", "Open", "Closed", "All"); // Add all statuses you support
+        statusChoiceBox.getSelectionModel().select("All");
     }
     public void loadDashboardPane(ActionEvent actionEvent) {
         loadPane("dashboardWindow");
@@ -227,7 +232,16 @@ public class MainWindowController implements Initializable {
             productsWindowController.onSearchQueryChanged(query);
         }
     }
-
+    public void findOrderOnKeyPressed(KeyEvent keyEvent) {
+        if (orderWindowController != null) {
+            String query = ((TextField) keyEvent.getSource()).getText();
+            currentQuery = query;
+            orderWindowController.onSearchQueryChanged(query);
+        }
+    }
+    public void setOrderWindowController(OrderWindowController controller) {
+        this.orderWindowController = controller;
+    }
     public void onVisibilityChanged(ActionEvent actionEvent) {
         if (productsWindowController != null) {
             String visibility = visibilityChoiceBox.getValue();
@@ -288,5 +302,12 @@ public class MainWindowController implements Initializable {
     }
 
     public void loadCustomerSettings(ActionEvent actionEvent) {
+    }
+
+    public void onStatusChanged(ActionEvent actionEvent) {
+        if (orderWindowController != null) {
+            String status = statusChoiceBox.getValue();
+            orderWindowController.onStatusChanged(currentQuery, status);
+        }
     }
 }

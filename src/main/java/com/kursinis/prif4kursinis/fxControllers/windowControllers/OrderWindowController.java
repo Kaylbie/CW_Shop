@@ -44,24 +44,32 @@ public class OrderWindowController implements Initializable  {
     }
     public void setOrdersData(User currentUser) {
         this.currentUser = currentUser;
-        refreshCartNodes(null);
+        refreshCartNodes(null, null);
+        setStatistics();
     }
-    private void refreshCartNodes(String query) {
-        ordersVbox.getChildren().clear(); // Assuming ordersVBox is the VBox where you want to display the cart nodes
+    private void setStatistics(){
         GenericHib cartHib = new GenericHib(entityManagerFactory);
         List<Cart> cartList = cartHib.getAllRecords(Cart.class);
         CartStatistics statistics = new CartStatistics(cartList);
         pendingCountLabel.setText(String.valueOf(statistics.getPendingCount()));
         openCountLabel.setText(String.valueOf(statistics.getOpenCount()));
         closedCountLabel.setText(String.valueOf(statistics.getClosedCount()));
+    }
+    public void refreshCartNodes(String query, String status) {
+        ordersVbox.getChildren().clear();
+        GenericHib cartHib = new GenericHib(entityManagerFactory);
+        List<Cart> cartList = cartHib.getAllRecords(Cart.class);
+
         for (Cart cart : cartList) {
-            if (query == null || isCartMatchingQuery(cart, query)) { // Define your query logic in isCartMatchingQuery
+            boolean matchesQuery = (query == null || isCartMatchingQuery(cart, query));
+            boolean matchesStatus = (status == null || isCartMatchingStatus(cart, status));
+
+            if (matchesQuery && matchesStatus) {
                 try {
                     FXMLLoader loader = new FXMLLoader(StartGui.class.getResource("nodes/orderTabs.fxml"));
                     Node node = loader.load();
-                    OrderTabsController controller = loader.getController(); // Assuming the controller class name is OrderTabsController
-                    controller.setCartData(cart, currentUser); // Assuming setCartData is a method in your OrderTabsController
-                    //controller.setUpdateCallback(this); // If you have an update callback
+                    OrderTabsController controller = loader.getController();
+                    controller.setCartData(cart, currentUser);
                     ordersVbox.getChildren().add(node);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -71,16 +79,26 @@ public class OrderWindowController implements Initializable  {
     }
 
     private boolean isCartMatchingQuery(Cart cart, String query) {
-        // Implement the logic to check if the cart should be included based on the query
-        // For example, you might want to check the status or total of the cart
-        return cart.getStatus().toLowerCase().contains(query.toLowerCase());
+        return String.valueOf(cart.getId()).startsWith(query);
     }
 
+    private boolean isCartMatchingStatus(Cart cart, String status) {
+        if ("All".equalsIgnoreCase(status)) {
+            return true; // Ignore status filter if "All" is selected
+        }
+        return cart.getStatus().equalsIgnoreCase(status);
+    }
+
+    public void onSearchQueryChanged(String query) {
+        refreshCartNodes(query, null);
+    }
 
     public void updateOrderTabs(MouseEvent mouseEvent) {
-        refreshCartNodes(null);
+        refreshCartNodes(null, null);
+        setStatistics();
     }
-    private void changeCount(){
+    public void onStatusChanged(String query, String status) {
+        refreshCartNodes(query, status);
 
     }
 }

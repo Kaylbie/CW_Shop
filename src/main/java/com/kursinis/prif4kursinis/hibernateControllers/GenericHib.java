@@ -1,8 +1,10 @@
 package com.kursinis.prif4kursinis.hibernateControllers;
 
+import com.kursinis.prif4kursinis.model.Cart;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaQuery;
 
 import java.util.ArrayList;
@@ -62,6 +64,26 @@ public class GenericHib {
         } finally {
             if (em != null) em.close();
         }
+    }
+    public List<Cart> findCartsByQuery(String query) {
+        EntityManager em = null;
+        List<Cart> carts = new ArrayList<>();
+        try {
+            em = getEntityManager();
+            int cartId = Integer.parseInt(query); // Assuming query is a cart ID
+            String queryStr = "SELECT c FROM Cart c WHERE c.id = :cartId";
+            TypedQuery<Cart> typedQuery = em.createQuery(queryStr, Cart.class);
+            typedQuery.setParameter("cartId", cartId);
+            carts = typedQuery.getResultList();
+        } catch (NumberFormatException e) {
+            // Handle invalid cart ID format
+            System.out.println("Invalid cart ID format in query.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) em.close();
+        }
+        return carts;
     }
 
 

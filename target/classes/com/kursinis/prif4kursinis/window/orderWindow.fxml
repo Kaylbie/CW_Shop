@@ -26,7 +26,7 @@
       <children>
          <VBox alignment="CENTER" layoutX="442.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0">
             <children>
-               <Label text="0" textFill="#b53f3f">
+               <Label fx:id="pendingCountLabel" style="-fx-text-fill: orange;" text="0" textFill="#b53f3f">
                   <font>
                      <Font name="System Bold" size="30.0" />
                   </font>
@@ -40,7 +40,7 @@
          </VBox>
          <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0">
             <children>
-               <Label text="0" textFill="#4bd044">
+               <Label fx:id="openCountLabel" text="0" textFill="#4bd044">
                   <font>
                      <Font name="System Bold" size="30.0" />
                   </font>
@@ -54,7 +54,7 @@
          </VBox>
          <VBox alignment="CENTER" layoutX="250.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0">
             <children>
-               <Label text="0">
+               <Label fx:id="closedCountLabel" style="-fx-text-fill: grey;" text="0">
                   <font>
                      <Font name="System Bold" size="30.0" />
                   </font>
