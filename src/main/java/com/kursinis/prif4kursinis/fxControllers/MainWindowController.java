@@ -18,10 +18,7 @@ import javafx.fxml.Initializable;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -31,6 +28,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable {
@@ -55,6 +53,9 @@ public class MainWindowController implements Initializable {
     private OrderWindowController orderWindowController;
     @FXML
     private TextField productSearchField;
+    private LocalDate currentStartDate;
+    private LocalDate currentEndDate;
+    private String currentStatus;
     private String currentQuery=null;
     @FXML private ChoiceBox<String> visibilityChoiceBox;
     @FXML
@@ -62,6 +63,11 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private ChoiceBox<String> statusChoiceBox;
+    @FXML
+    private DatePicker selectDateFrom;
+    @FXML
+    private DatePicker selectDateTo;
+    @FXML private TextField orderNrSearch;
 
     @FXML private Button logoutButton1;
     @Override
@@ -236,7 +242,9 @@ public class MainWindowController implements Initializable {
         if (orderWindowController != null) {
             String query = ((TextField) keyEvent.getSource()).getText();
             currentQuery = query;
-            orderWindowController.onSearchQueryChanged(query);
+            //orderWindowController.onSearchQueryChanged(query);
+            orderWindowController.refreshCartNodes(currentQuery, currentStatus, currentStartDate, currentEndDate);
+
         }
     }
     public void setOrderWindowController(OrderWindowController controller) {
@@ -304,10 +312,28 @@ public class MainWindowController implements Initializable {
     public void loadCustomerSettings(ActionEvent actionEvent) {
     }
 
-    public void onStatusChanged(ActionEvent actionEvent) {
+
+    public void onFilterChanged(ActionEvent actionEvent) {
         if (orderWindowController != null) {
+            LocalDate startDate = selectDateFrom.getValue();
+            currentStartDate=startDate;
+            LocalDate endDate = selectDateTo.getValue();
+            currentEndDate=endDate;
             String status = statusChoiceBox.getValue();
-            orderWindowController.onStatusChanged(currentQuery, status);
+            currentStatus=status;
+            orderWindowController.refreshCartNodes(currentQuery, status, startDate, endDate);
         }
+    }
+
+    public void clearFiltersActionButton(MouseEvent mouseEvent) {
+        selectDateFrom.setValue(null);
+        selectDateTo.setValue(null);
+        statusChoiceBox.getSelectionModel().select("All");
+        orderNrSearch.setText("");
+        currentStartDate=null;
+        currentEndDate=null;
+        currentStatus=null;
+        currentQuery=null;
+        orderWindowController.refreshCartNodes(currentQuery, currentStatus, currentStartDate, currentEndDate);
     }
 }

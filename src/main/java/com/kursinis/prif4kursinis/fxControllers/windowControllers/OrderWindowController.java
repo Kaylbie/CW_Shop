@@ -18,6 +18,9 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -44,7 +47,7 @@ public class OrderWindowController implements Initializable  {
     }
     public void setOrdersData(User currentUser) {
         this.currentUser = currentUser;
-        refreshCartNodes(null, null);
+        refreshCartNodes(null, null, null, null);
         setStatistics();
     }
     private void setStatistics(){
@@ -55,16 +58,15 @@ public class OrderWindowController implements Initializable  {
         openCountLabel.setText(String.valueOf(statistics.getOpenCount()));
         closedCountLabel.setText(String.valueOf(statistics.getClosedCount()));
     }
-    public void refreshCartNodes(String query, String status) {
+    public void refreshCartNodes(String query, String status, LocalDate startDate, LocalDate endDate) {
         ordersVbox.getChildren().clear();
         GenericHib cartHib = new GenericHib(entityManagerFactory);
         List<Cart> cartList = cartHib.getAllRecords(Cart.class);
 
         for (Cart cart : cartList) {
-            boolean matchesQuery = (query == null || isCartMatchingQuery(cart, query));
-            boolean matchesStatus = (status == null || isCartMatchingStatus(cart, status));
-
-            if (matchesQuery && matchesStatus) {
+            if ((query == null || isCartMatchingQuery(cart, query)) &&
+                    (status == null || isCartMatchingStatus(cart, status)) &&
+                    isCartMatchingDateRange(cart, startDate, endDate)) {
                 try {
                     FXMLLoader loader = new FXMLLoader(StartGui.class.getResource("nodes/orderTabs.fxml"));
                     Node node = loader.load();
@@ -77,7 +79,19 @@ public class OrderWindowController implements Initializable  {
             }
         }
     }
-
+    private boolean isCartMatchingDateRange(Cart cart, LocalDate startDate, LocalDate endDate) {
+        LocalDate cartDate = cart.getDateCreated(); // Assuming getDateCreated() returns a LocalDate
+        if (startDate == null && endDate == null) {
+            return true; // No date filter applied
+        }
+        if (startDate != null && cartDate.isBefore(startDate)) {
+            return false; // Cart date is before the start date
+        }
+        if (endDate != null && cartDate.isAfter(endDate)) {
+            return false; // Cart date is after the end date
+        }
+        return true; // Cart date is within the range
+    }
     private boolean isCartMatchingQuery(Cart cart, String query) {
         return String.valueOf(cart.getId()).startsWith(query);
     }
@@ -90,15 +104,24 @@ public class OrderWindowController implements Initializable  {
     }
 
     public void onSearchQueryChanged(String query) {
-        refreshCartNodes(query, null);
+        refreshCartNodes(query, null, null, null);
     }
 
     public void updateOrderTabs(MouseEvent mouseEvent) {
-        refreshCartNodes(null, null);
+        refreshCartNodes(null, null, null, null);
         setStatistics();
     }
-    public void onStatusChanged(String query, String status) {
-        refreshCartNodes(query, status);
+    public void sortOrdersByStatus(List<Cart> orders) {
+        Comparator<Cart> statusComparator = (o1, o2) -> {
+            if (o1.getStatus().equals("Pending") && !o2.getStatus().equals("Pending")) {
+                return -1; // Pending comes first
+            } else if (!o1.getStatus().equals("Pending") && o2.getStatus().equals("Pending")) {
+                return 1; // Non-pending comes later
+            } else {
+                return o1.getStatus().compareTo(o2.getStatus()); // Else compare statuses directly
+            }
+        };
 
+        Collections.sort(orders, statusComparator);
     }
 }

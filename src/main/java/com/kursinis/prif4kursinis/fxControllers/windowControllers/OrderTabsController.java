@@ -70,7 +70,7 @@ public class OrderTabsController implements Initializable {
         openButton.setVisible(true);
         closeButton.setVisible(false);
         cancelButton.setVisible(true);
-        attentionRequired(true);
+        //attentionRequired(true);
     }
 
     private void orderClosed() {
@@ -87,7 +87,7 @@ public class OrderTabsController implements Initializable {
         attentionRequired(false);
     }
 
-    private void attentionRequired(Boolean required){
+    public void attentionRequired(Boolean required){
         attentionRequiredStar.setVisible(required);
     }
     private void orderOpened(){
