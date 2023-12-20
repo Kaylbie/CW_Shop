@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 public class UserOrdersWindowController implements Initializable {
     @FXML
     private ListView<Cart> ordersListView;
-    List<String> statuses = Arrays.asList("Pending", "Open", "Closed");
+    List<String> statuses = Arrays.asList("Pending", "Open", "Closed", "Cancelled");
     private CustomHib customHib;
     private User currentUser;
     @FXML

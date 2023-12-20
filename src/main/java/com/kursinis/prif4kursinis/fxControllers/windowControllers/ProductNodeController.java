@@ -2,6 +2,7 @@ package com.kursinis.prif4kursinis.fxControllers.windowControllers;
 
 import com.kursinis.prif4kursinis.StartGui;
 import com.kursinis.prif4kursinis.fxControllers.createControllers.CreateProductController;
+import com.kursinis.prif4kursinis.fxControllers.userWindowControllers.DisplayCustomerProductWindowController;
 import com.kursinis.prif4kursinis.hibernateControllers.CustomHib;
 import com.kursinis.prif4kursinis.model.Product;
 import jakarta.persistence.EntityManagerFactory;
@@ -18,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -105,4 +107,21 @@ public class ProductNodeController implements Initializable {
     }
 
 
+    public void handleProductView(ActionEvent actionEvent) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("userWindow/displayCustomerProductWindow.fxml"));
+            Parent root = fxmlLoader.load();
+
+            DisplayCustomerProductWindowController controller = fxmlLoader.getController();
+            controller.setProductData(product);
+            controller.setAdminButtonsVisible(true);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Product");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

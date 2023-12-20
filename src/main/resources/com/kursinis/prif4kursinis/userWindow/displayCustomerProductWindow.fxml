@@ -26,8 +26,8 @@
          <Button fx:id="addToCartButton" layoutX="18.0" layoutY="158.0" onAction="#addToCart" style="-fx-font-size: 14; -fx-background-color: transparent;" text="Add to cart" />
         <TreeView fx:id="commentTreeView" layoutX="439.0" layoutY="397.0" onMouseClicked="#selectedComment" prefHeight="253.0" prefWidth="330.0" />
         <Button layoutX="20.0" layoutY="665.0" mnemonicParsing="false" onAction="#createComment" text="Add comment" />
-        <Button layoutX="149.0" layoutY="665.0" mnemonicParsing="false" onAction="#updateComment" text="Update" visible="false" />
-        <Button layoutX="282.0" layoutY="665.0" mnemonicParsing="false" onAction="#deleteComment" text="Delete" visible="false" />
+        <Button fx:id="updateButton" layoutX="149.0" layoutY="665.0" mnemonicParsing="false" onAction="#updateComment" text="Update" visible="false" />
+        <Button fx:id="deleteButton" layoutX="282.0" layoutY="665.0" mnemonicParsing="false" onAction="#deleteComment" text="Delete" visible="false" />
       <TextArea fx:id="commentBodyField" layoutX="19.0" layoutY="439.0" prefHeight="211.0" prefWidth="314.0" promptText="Body" />
       <TextField fx:id="commentTitleField" layoutX="19.0" layoutY="397.0" prefHeight="25.0" prefWidth="314.0" promptText="Title" />
     </children>

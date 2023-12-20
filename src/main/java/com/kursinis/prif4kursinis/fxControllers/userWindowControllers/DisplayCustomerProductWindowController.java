@@ -27,7 +27,7 @@ public class DisplayCustomerProductWindowController implements Initializable {
     @FXML private ImageView productImageView;
     @FXML private TextField commentTitleField;
     @FXML private TextArea commentBodyField;
-    @FXML private Button deleteButton, visibilityButton;
+    @FXML private Button deleteButton, visibilityButton, updateButton;
     @FXML private TreeView<Comment> commentTreeView; // Replace ListView with TreeView
 
     private ProductUpdateCallback updateCallback;
@@ -54,7 +54,10 @@ public class DisplayCustomerProductWindowController implements Initializable {
         }
         loadCommentTree(product.getId());
     }
-
+    public void setAdminButtonsVisible(boolean visible) {
+        deleteButton.setVisible(visible);
+        updateButton.setVisible(visible);
+    }
     public void addToCart(ActionEvent actionEvent) {
     }
 
@@ -119,5 +122,9 @@ public class DisplayCustomerProductWindowController implements Initializable {
             commentTitleField.setText(selectedComment.getCommentTitle());
             commentBodyField.setText(selectedComment.getCommentBody());
         }
+    }
+
+    public void removeComment(ActionEvent actionEvent) {
+
     }
 }
