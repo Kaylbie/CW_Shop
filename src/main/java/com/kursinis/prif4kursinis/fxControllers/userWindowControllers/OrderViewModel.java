@@ -4,12 +4,14 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class OrderViewModel {
+    private SimpleIntegerProperty id;
     private SimpleStringProperty totalPrice;
     private SimpleIntegerProperty quantity;
     private SimpleStringProperty managerName;
     private SimpleStringProperty status;
 
-    public OrderViewModel(double totalPrice, int quantity, String managerName, String status) {
+    public OrderViewModel(int id, double totalPrice, int quantity, String managerName, String status) {
+        this.id = new SimpleIntegerProperty(id);
         this.totalPrice = new SimpleStringProperty("$" + totalPrice);
         this.quantity = new SimpleIntegerProperty(quantity);
         this.managerName = new SimpleStringProperty(managerName);
@@ -17,6 +19,8 @@ public class OrderViewModel {
     }
 
     // Getters and setters for each property
+    public int getId() { return id.get(); }
+    public void setId(int value) { id.set(value); }
     public String getTotalPrice() { return totalPrice.get(); }
     public void setTotalPrice(double value) { totalPrice.set("$" + value); }
 

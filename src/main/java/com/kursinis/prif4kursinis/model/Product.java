@@ -24,7 +24,8 @@ public class Product implements Serializable {
     double price;
     String description;
     String photoName;
-
+    double rating=0;
+    int ratingCount=0;
     String manufacturer;
     boolean isVisible;
     @ManyToOne

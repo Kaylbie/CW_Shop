@@ -160,6 +160,22 @@ public class CustomHib extends GenericHib {
         }
         return comments;
     }
+    public Cart findCartById(int cartId) {
+        EntityManager em = null;
+        Cart cart = null;
+        try {
+            em = getEntityManager();
+            cart = em.find(Cart.class, cartId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Handle or log the exception as needed
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+        return cart;
+    }
 
 
     public void deleteProduct(int id) {

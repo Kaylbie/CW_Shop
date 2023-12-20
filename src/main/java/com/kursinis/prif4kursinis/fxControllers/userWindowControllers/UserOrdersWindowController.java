@@ -1,6 +1,7 @@
 package com.kursinis.prif4kursinis.fxControllers.userWindowControllers;
 
 import com.kursinis.prif4kursinis.StartGui;
+import com.kursinis.prif4kursinis.fxControllers.createControllers.EditUserWindowController;
 import com.kursinis.prif4kursinis.hibernateControllers.CustomHib;
 import com.kursinis.prif4kursinis.model.Cart;
 import com.kursinis.prif4kursinis.model.User;
@@ -9,10 +10,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.util.Callback;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +32,10 @@ public class UserOrdersWindowController implements Initializable {
     List<String> statuses = Arrays.asList("Pending", "Open", "Closed", "Cancelled");
     private CustomHib customHib;
     private User currentUser;
+
+    @FXML
+    private TableColumn<OrderViewModel, Void> cancelOrder;
+
     @FXML
     ComboBox statusFilterComboBox;
     private EntityManagerFactory entityManagerFactory;
@@ -34,6 +46,8 @@ public class UserOrdersWindowController implements Initializable {
     @FXML
     private TableColumn<OrderViewModel, Number> quantityColumn;
     @FXML
+    private TableColumn<OrderViewModel, Number> idColumn;
+    @FXML
     private TableColumn<OrderViewModel, String> managerNameColumn;
     @FXML
     private TableColumn<OrderViewModel, String> statusColumn;
@@ -41,6 +55,7 @@ public class UserOrdersWindowController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         entityManagerFactory = StartGui.getEntityManagerFactory();
         customHib = new CustomHib(entityManagerFactory);
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         totalPriceColumn.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         managerNameColumn.setCellValueFactory(new PropertyValueFactory<>("managerName"));
@@ -53,17 +68,57 @@ public class UserOrdersWindowController implements Initializable {
 
         for (Cart cart : orders) {
             String managerName = cart.getResponsibleManager() != null ? cart.getResponsibleManager().getName() : "N/A";
-            orderViewModels.add(new OrderViewModel(cart.getTotal(), cart.getItemCount(), managerName, cart.getStatus()));
+            orderViewModels.add(new OrderViewModel(cart.getId(), cart.getTotal(), cart.getItemCount(), managerName, cart.getStatus()));
         }
 
         // Set the ObservableList of OrderViewModels to the TableView
         ordersTableView.setItems(orderViewModels);
+        setupCancelOrderButton();
     }
+
 
     public void setCurrentUser(User currentUser) {
         this.currentUser=currentUser;
         loadOrders();
     }
+    private void setupCancelOrderButton() {
+        cancelOrder.setCellFactory(param -> new TableCell<OrderViewModel, Void>() {
+            private final Button cancelBtn = new Button("Cancel Order");
+
+            {
+                cancelBtn.setOnAction(event -> {
+                    OrderViewModel orderViewModel = getTableView().getItems().get(getIndex());
+                    Cart cart = customHib.findCartById(orderViewModel.getId()); // Assuming OrderViewModel has a getCartId method
+
+                    if (cart != null) {
+                        // Handle the cancel action
+                        cart.setStatus("Cancelled");
+                        customHib.update(cart);
+                        showAlert("Order Cancelled", "Order has been cancelled.");
+                        loadOrders();
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(cancelBtn);
+                }
+            }
+        });
+
+    }
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
 
     public void onFilter(ActionEvent actionEvent) {
         Object selectedStatusObject = statusFilterComboBox.getValue();
@@ -80,7 +135,7 @@ public class UserOrdersWindowController implements Initializable {
             ObservableList<OrderViewModel> orderViewModels = FXCollections.observableArrayList();
             for (Cart cart : filteredOrders) {
                 String managerName = cart.getResponsibleManager() != null ? cart.getResponsibleManager().getName() : "N/A";
-                orderViewModels.add(new OrderViewModel(cart.getTotal(), cart.getItemCount(), managerName, cart.getStatus()));
+                orderViewModels.add(new OrderViewModel(cart.getId(), cart.getTotal(), cart.getItemCount(), managerName, cart.getStatus()));
             }
             ordersTableView.getItems().clear();
             ordersTableView.setItems(orderViewModels);
@@ -88,6 +143,7 @@ public class UserOrdersWindowController implements Initializable {
             // Handle the case where no status is selected or the selected status is invalid
             //showAlert("Filter Error", "Please select a valid status to filter.");
         }
+        setupCancelOrderButton();
     }
 
     public void onReset(ActionEvent actionEvent) {

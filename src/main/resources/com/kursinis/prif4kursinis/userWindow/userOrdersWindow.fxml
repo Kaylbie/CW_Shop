@@ -15,6 +15,7 @@
                     <String fx:value="Pending" />
                     <String fx:value="Open" />
                     <String fx:value="Closed" />
+                    <String fx:value="Cancelled" />
                 </FXCollections>
             </items>
         </ComboBox>
@@ -27,6 +28,7 @@
         <!-- Orders Table -->
         <TableView fx:id="ordersTableView" layoutX="50.0" layoutY="70.0" prefHeight="600.0" prefWidth="800.0">
             <columns>
+                <TableColumn fx:id="idColumn" minWidth="50.0" text="Id" />
                 <!-- Total Price Column -->
                 <TableColumn fx:id="totalPriceColumn" minWidth="200.0" text="Total Price" />
                 <!-- Quantity Column -->
@@ -35,6 +37,8 @@
                 <TableColumn fx:id="managerNameColumn" minWidth="200.0" text="Manager Name" />
                 <!-- Status Column -->
                 <TableColumn fx:id="statusColumn" minWidth="100.0" text="Status" />
+
+                <TableColumn fx:id="cancelOrder" prefWidth="150.0" text="Cancel" />
             </columns>
         </TableView>
       <Button fx:id="resetButton" layoutX="805.0" layoutY="35.0" onAction="#onReset" text="Reset" />

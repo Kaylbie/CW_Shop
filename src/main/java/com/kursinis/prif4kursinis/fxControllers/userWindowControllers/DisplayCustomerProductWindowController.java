@@ -31,12 +31,13 @@ public class DisplayCustomerProductWindowController implements Initializable {
     @FXML private Button deleteButton, visibilityButton, updateButton;
     @FXML private TreeView<Comment> commentTreeView; // Replace ListView with TreeView
 
-    private ProductUpdateCallback updateCallback;
     private Product product;
     private EntityManagerFactory entityManagerFactory;
-    private Product editableProduct;
     private CustomHib customHib;
     private User currentUser;
+
+    @FXML Label ratingLabel;
+    @FXML Slider ratingSlider;
     @FXML private Pane adminDashboardPane;
 
     @Override
@@ -50,6 +51,7 @@ public class DisplayCustomerProductWindowController implements Initializable {
         productNameLabel.setText(product.getTitle());
         productCodeLabel.setText(product.getCode()); // Replace getCode() with your actual method
         productPriceLabel.setText("Price: $" + product.getPrice()); // Replace getPrice() with your actual method
+        updateRating();
         String imagePath = "/com/kursinis/prif4kursinis/images/" + product.getPhotoName(); // Replace getImageName() with your actual method
         if (imagePath != null && !imagePath.isEmpty()) {
             Image image = new Image(getClass().getResourceAsStream(imagePath));
@@ -127,7 +129,14 @@ public class DisplayCustomerProductWindowController implements Initializable {
         }
     }
 
-    public void removeComment(ActionEvent actionEvent) {
-
+    public void saveRating(ActionEvent actionEvent) {
+        product.setRatingCount(product.getRatingCount()+1);
+        product.setRating(product.getRating()+ratingSlider.getValue());
+        customHib.update(product);
+        //showAlert("Success", "Product updated successfully.");
+        updateRating();
+    }
+    private void updateRating() {
+        ratingLabel.setText("Rating: " + String.format("%.2f",product.getRating()/(double) product.getRatingCount()));
     }
 }

@@ -5,6 +5,7 @@ import com.kursinis.prif4kursinis.fxControllers.createControllers.CreateProductC
 import com.kursinis.prif4kursinis.fxControllers.userWindowControllers.UserCartWindowController;
 import com.kursinis.prif4kursinis.fxControllers.userWindowControllers.UserCatalogueWindowController;
 import com.kursinis.prif4kursinis.fxControllers.userWindowControllers.UserOrdersWindowController;
+import com.kursinis.prif4kursinis.fxControllers.windowControllers.OrderWindowController;
 import com.kursinis.prif4kursinis.fxControllers.windowControllers.ProductsWindowController;
 import com.kursinis.prif4kursinis.hibernateControllers.CustomHib;
 import com.kursinis.prif4kursinis.model.Customer;
@@ -86,7 +87,17 @@ public class MainWindowController implements Initializable {
     }
 
     public void loadOrderPane(ActionEvent actionEvent){
-        loadPane("orderWindow");
+        adminDashboardPane.getChildren().clear();
+        FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("window/orderWindow.fxml"));
+
+        try {
+            adminDashboardPane.getChildren().add(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        OrderWindowController controller = fxmlLoader.getController();
+        controller.setOrdersData(currentUser);
+        //setProductsWindowController(controller);
         orderPageButtons.setVisible(true);
         mainWindowButtons.setVisible(false);
         productsPageButtons.setVisible(false);
@@ -126,8 +137,8 @@ public class MainWindowController implements Initializable {
     }
     public void loadUsersPane(ActionEvent actionEvent) {
         loadPane("usersWindow");
-        productsPageButtons.setVisible(true);
-        mainWindowButtons.setVisible(false);
+        productsPageButtons.setVisible(false);
+        mainWindowButtons.setVisible(true);
         orderPageButtons.setVisible(false);
         userWindowButtons.setVisible(false);
     }
