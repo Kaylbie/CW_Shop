@@ -160,7 +160,7 @@
                </padding></VBox>
          </children>
       </VBox>
-      <VBox fx:id="productsPageButtons" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefHeight="750.0" prefWidth="270.0" style="-fx-background-color: #333333;" visible="false">
+      <VBox fx:id="productsPageButtons" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefHeight="750.0" prefWidth="270.0" style="-fx-background-color: #333333;">
          <children>
             <Pane prefHeight="268.0" prefWidth="270.0" visible="false">
                <children>
@@ -245,7 +245,7 @@
             </VBox>
          </children>
       </VBox>
-      <VBox fx:id="userWindowButtons" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" prefHeight="750.0" prefWidth="270.0" style="-fx-background-color: #333333;">
+      <VBox fx:id="userWindowButtons" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" prefHeight="750.0" prefWidth="270.0" style="-fx-background-color: #333333;" visible="false">
          <children>
             <Pane prefHeight="268.0" prefWidth="270.0" visible="false">
                <children>
