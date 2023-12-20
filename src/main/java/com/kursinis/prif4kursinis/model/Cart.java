@@ -25,6 +25,7 @@ public class Cart {
     private String status;
     private double total;
     private int itemCount;
+    private boolean isAttentionRequired;
 
     @ManyToOne
     @JoinColumn(name = "manager_id")

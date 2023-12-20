@@ -64,27 +64,30 @@ public class OrderTabsController implements Initializable {
             orderPending();
             orderStatusLabel.setStyle("-fx-text-fill: orange; -fx-font-size: 14;");
         }
+        if(cart.isAttentionRequired()){
+            attentionRequired(true);
+        }
+        else{
+            attentionRequired(false);
+        }
     }
 
     private void orderPending() {
         openButton.setVisible(true);
         closeButton.setVisible(false);
         cancelButton.setVisible(true);
-        //attentionRequired(true);
     }
 
     private void orderClosed() {
         openButton.setVisible(false);
         closeButton.setVisible(false);
         cancelButton.setVisible(false);
-        attentionRequired(false);
     }
 
     private void orderCancelled() {
         openButton.setVisible(false);
         closeButton.setVisible(false);
         cancelButton.setVisible(false);
-        attentionRequired(false);
     }
 
     public void attentionRequired(Boolean required){
@@ -94,7 +97,6 @@ public class OrderTabsController implements Initializable {
         openButton.setVisible(false);
         closeButton.setVisible(true);
         closeButton.setVisible(true);
-        attentionRequired(false);
     }
     public void openOrderWindow(MouseEvent mouseEvent) {
 
@@ -103,6 +105,7 @@ public class OrderTabsController implements Initializable {
     public void handleOpenActionButton(ActionEvent actionEvent) {
         cart.setResponsibleManager((currentUser instanceof Manager) ? (Manager) currentUser : null);
         cart.setStatus("Open");
+        cart.setAttentionRequired(false);
         customHib.update(cart);
         loadOrderData();
     }

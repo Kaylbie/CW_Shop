@@ -62,7 +62,7 @@ public class OrderWindowController implements Initializable  {
         ordersVbox.getChildren().clear();
         GenericHib cartHib = new GenericHib(entityManagerFactory);
         List<Cart> cartList = cartHib.getAllRecords(Cart.class);
-
+        sortOrdersWithAttention(cartList);
         for (Cart cart : cartList) {
             if ((query == null || isCartMatchingQuery(cart, query)) &&
                     (status == null || isCartMatchingStatus(cart, status)) &&
@@ -79,6 +79,7 @@ public class OrderWindowController implements Initializable  {
             }
         }
     }
+
     private boolean isCartMatchingDateRange(Cart cart, LocalDate startDate, LocalDate endDate) {
         LocalDate cartDate = cart.getDateCreated(); // Assuming getDateCreated() returns a LocalDate
         if (startDate == null && endDate == null) {
@@ -103,25 +104,66 @@ public class OrderWindowController implements Initializable  {
         return cart.getStatus().equalsIgnoreCase(status);
     }
 
-    public void onSearchQueryChanged(String query) {
-        refreshCartNodes(query, null, null, null);
-    }
-
     public void updateOrderTabs(MouseEvent mouseEvent) {
         refreshCartNodes(null, null, null, null);
         setStatistics();
     }
-    public void sortOrdersByStatus(List<Cart> orders) {
-        Comparator<Cart> statusComparator = (o1, o2) -> {
-            if (o1.getStatus().equals("Pending") && !o2.getStatus().equals("Pending")) {
-                return -1; // Pending comes first
-            } else if (!o1.getStatus().equals("Pending") && o2.getStatus().equals("Pending")) {
-                return 1; // Non-pending comes later
-            } else {
-                return o1.getStatus().compareTo(o2.getStatus()); // Else compare statuses directly
+    public void sortOrdersWithAttention(List<Cart> orders) {
+        Comparator<Cart> comparator = (o1, o2) -> {
+            boolean isO1Pending = o1.getStatus().equals("Pending");
+            boolean isO2Pending = o2.getStatus().equals("Pending");
+            boolean isO1Open = o1.getStatus().equals("Open");
+            boolean isO2Open = o2.getStatus().equals("Open");
+            boolean isO1OlderThanDay = isOrderOlderThanOneDay(o1);
+            boolean isO2OlderThanDay = isOrderOlderThanOneDay(o2);
+            boolean isO1AttentionRequired = o1.isAttentionRequired();
+            boolean isO2AttentionRequired = o2.isAttentionRequired();
+
+            // Prioritize orders with attention required
+            if (isO1AttentionRequired && !isO2AttentionRequired) {
+                return -1;
             }
+            if (!isO1AttentionRequired && isO2AttentionRequired) {
+                return 1;
+            }
+
+            // Then prioritize 'Pending' orders, especially those older than a day
+            if (isO1Pending && isO1OlderThanDay) {
+                o1.setAttentionRequired(true);
+                return -1;
+            }
+            if (isO2Pending && isO2OlderThanDay) {
+                o2.setAttentionRequired(true);
+                return 1;
+            }
+
+            // Next, prioritize other 'Pending' orders
+            if (isO1Pending && !isO2Pending) {
+                return -1;
+            }
+            if (!isO1Pending && isO2Pending) {
+                return 1;
+            }
+
+            // Then 'Open' orders
+            if (isO1Open && !isO2Open) {
+                return -1;
+            }
+            if (!isO1Open && isO2Open) {
+                return 1;
+            }
+
+            // Finally, sort by other statuses
+            return o1.getStatus().compareTo(o2.getStatus());
         };
 
-        Collections.sort(orders, statusComparator);
+        Collections.sort(orders, comparator);
     }
+
+
+    private boolean isOrderOlderThanOneDay(Cart cart) {
+        LocalDate oneDayAgo = LocalDate.now().minusDays(1);
+        return cart.getDateCreated().isBefore(oneDayAgo);
+    }
+
 }
