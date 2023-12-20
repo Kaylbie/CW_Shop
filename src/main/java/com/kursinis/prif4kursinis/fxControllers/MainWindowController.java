@@ -68,13 +68,11 @@ public class MainWindowController implements Initializable {
     @FXML
     private DatePicker selectDateTo;
     @FXML private TextField orderNrSearch;
-
     @FXML private Button logoutButton1;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         entityManagerFactory = StartGui.getEntityManagerFactory();
         loadEmpty();
-        //
     }
 
     private void loadEmpty() {
@@ -87,14 +85,12 @@ public class MainWindowController implements Initializable {
     private void loadPane(String paneName){
         adminDashboardPane.getChildren().clear();
         FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("window/" + paneName + ".fxml"));
-
         try {
             adminDashboardPane.getChildren().add(fxmlLoader.load());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
     public void loadOrderPane(ActionEvent actionEvent){
         adminDashboardPane.getChildren().clear();
         FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("window/orderWindow.fxml"));
@@ -173,24 +169,17 @@ public class MainWindowController implements Initializable {
 
     public void createNewProduct(ActionEvent actionEvent) {
         try {
-            // Load the FXML file
             FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("create/createProduct.fxml"));
             Parent root = fxmlLoader.load();
-            //CreateProductController createProductController = fxmlLoader.getController();
-            //createProductController.setData(entityManagerFactory);
-            // Create a new stage for the popup
             Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL); // Set modality to block interaction with the main window
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Create New Product");
 
-            // Create and set the scene
             Scene scene = new Scene(root);
             stage.setScene(scene);
-
-            // Show the new stage
             stage.showAndWait();
         } catch (Exception e) {
-            e.printStackTrace(); // Or handle the exception as you see fit
+            e.printStackTrace();
         }
     }
 
@@ -242,7 +231,6 @@ public class MainWindowController implements Initializable {
         if (orderWindowController != null) {
             String query = ((TextField) keyEvent.getSource()).getText();
             currentQuery = query;
-            //orderWindowController.onSearchQueryChanged(query);
             orderWindowController.refreshCartNodes(currentQuery, currentStatus, currentStartDate, currentEndDate);
 
         }
@@ -258,7 +246,7 @@ public class MainWindowController implements Initializable {
     }
     private void openLoginWindow() {
         try {
-            FXMLLoader loader = new FXMLLoader(StartGui.class.getResource("login.fxml")); // Update with your login FXML file path
+            FXMLLoader loader = new FXMLLoader(StartGui.class.getResource("login.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
@@ -311,8 +299,6 @@ public class MainWindowController implements Initializable {
 
     public void loadCustomerSettings(ActionEvent actionEvent) {
     }
-
-
     public void onFilterChanged(ActionEvent actionEvent) {
         if (orderWindowController != null) {
             LocalDate startDate = selectDateFrom.getValue();
@@ -324,7 +310,6 @@ public class MainWindowController implements Initializable {
             orderWindowController.refreshCartNodes(currentQuery, status, startDate, endDate);
         }
     }
-
     public void clearFiltersActionButton(MouseEvent mouseEvent) {
         selectDateFrom.setValue(null);
         selectDateTo.setValue(null);

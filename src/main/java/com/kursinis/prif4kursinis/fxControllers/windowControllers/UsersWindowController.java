@@ -56,7 +56,6 @@ public class UsersWindowController implements Initializable {
                 cellData.getValue() instanceof Manager ? "Manager" : "Customer"
         ));
         setupEditColumn();
-        // Set up other columns as needed
     }
     private void setupEditColumn() {
         editColumn.setCellFactory(new Callback<TableColumn<User, Void>, TableCell<User, Void>>() {

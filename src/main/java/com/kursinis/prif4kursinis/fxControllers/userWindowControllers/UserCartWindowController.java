@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 public class UserCartWindowController implements Initializable {
     @FXML
-    private ListView<String> cartItemsListView; // Replace CartItem with your cart item model
+    private ListView<String> cartItemsListView;
     @FXML private Button checkoutButton;
     @FXML private Button removeItemButton;
     @FXML private Label totalPriceLabel;
@@ -81,12 +81,10 @@ public class UserCartWindowController implements Initializable {
             activeCart.setTotal(newTotal);
             activeCart.setItemCount(Math.max(activeCart.getItemCount() - selectedCartItem.getQuantity(), 0));
 
-            // Update the database
             customHib.delete(CartItem.class, selectedCartItem.getId());
             activeCart.getItems().remove(selectedCartItem);
             customHib.update(activeCart);
 
-            // Update the UI
             cartItemsListView.getItems().remove(selectedProductDisplay);
             totalPriceLabel.setText("Total: $" + activeCart.getTotal());
         } else {
@@ -94,15 +92,12 @@ public class UserCartWindowController implements Initializable {
         }
     }
     private Cart findActiveCartForUser(User user) {
-        // Assuming customHib.findActiveCartByUserId only returns an active cart
         return customHib.findActiveCartByUserId(user.getId());
     }
 
 
     private Product decodeStringToProduct(String productDisplay) {
-        // Split the string to extract the product name
         String productName = productDisplay.split(" - $")[0];
-        // Use the product name to find the corresponding Product object in the map
         return productMap.getOrDefault(productName, null);
     }
     private void showAlert(String title, String message) {
@@ -115,7 +110,6 @@ public class UserCartWindowController implements Initializable {
 
 
     public void checkoutButton(ActionEvent actionEvent) {
-        // Find the active cart for the current user
         Cart activeCart = customHib.findActiveCartByUserId(currentUser.getId());
         if (activeCart == null && activeCart.getItems().isEmpty()) {
             showAlert("Checkout Failed", "No active cart found.");
@@ -123,7 +117,6 @@ public class UserCartWindowController implements Initializable {
         }
         activeCart.setStatus("Pending");
 
-        // Update the cart in the database
         try {
             customHib.update(activeCart);
             showAlert("Checkout Successful", "Your order has been placed successfully.");

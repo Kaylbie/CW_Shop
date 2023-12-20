@@ -62,7 +62,7 @@ public class CreateProductController implements Initializable {
         titleLabel.setText("Edit Product");
         createProductButton.setText("Save Product");
         productNameField.setText(product.getTitle());
-        productCodeField.setText(product.getCode()); // Adjust these getters to your Product class
+        productCodeField.setText(product.getCode());
         productPriceField.setText(String.valueOf(product.getPrice()));
         productDescriptionField.setText(product.getDescription());
         imagePathLabel.setText(product.getPhotoName());
@@ -94,7 +94,6 @@ public class CreateProductController implements Initializable {
             String imagePath = selectedImagePath != null && !selectedImagePath.isEmpty() ? new File(selectedImagePath).getName() : null;
 
             if (productToEdit == null) {
-                // Creating a new product
                 String destPath = "src/main/resources/com/kursinis/prif4kursinis/images/" + imagePath;
                 if (imagePath != null) {
                     Files.copy(Paths.get(selectedImagePath), Paths.get(destPath), StandardCopyOption.REPLACE_EXISTING);
@@ -129,7 +128,6 @@ public class CreateProductController implements Initializable {
                 showAlert("Success", "Product updated successfully.");
             }
 
-            // Close the stage
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             stage.close();
         } catch (IOException e) {

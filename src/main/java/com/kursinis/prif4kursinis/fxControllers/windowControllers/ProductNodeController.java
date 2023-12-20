@@ -40,7 +40,6 @@ public class ProductNodeController implements Initializable {
     private ProductUpdateCallback updateCallback;
     private Product product;
     private EntityManagerFactory entityManagerFactory;
-    private Product editableProduct;
     private User currentUser;
 
     @Override
@@ -55,9 +54,9 @@ public class ProductNodeController implements Initializable {
         this.product=product;
         this.currentUser= currentUser;
         productNameLabel.setText(product.getTitle());
-        productCodeLabel.setText(product.getCode()); // Replace getCode() with your actual method
-        productPriceLabel.setText("Price: $" + product.getPrice()); // Replace getPrice() with your actual method
-        String imagePath = "/com/kursinis/prif4kursinis/images/" + product.getPhotoName(); // Replace getImageName() with your actual method
+        productCodeLabel.setText(product.getCode());
+        productPriceLabel.setText("Price: $" + product.getPrice());
+        String imagePath = "/com/kursinis/prif4kursinis/images/" + product.getPhotoName();
         if (imagePath != null && !imagePath.isEmpty()) {
             Image image = new Image(getClass().getResourceAsStream(imagePath));
             productImageView.setImage(image);
@@ -83,7 +82,7 @@ public class ProductNodeController implements Initializable {
             Parent root = fxmlLoader.load();
 
             CreateProductController createProductController = fxmlLoader.getController();
-            createProductController.setData(entityManagerFactory, product); // Pass product to edit
+            createProductController.setData(entityManagerFactory, product);
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Edit Product");

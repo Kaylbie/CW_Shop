@@ -37,9 +37,7 @@ public class LoginController implements Initializable {
     public void registerNewUser() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("registration.fxml"));
         Parent parent = fxmlLoader.load();
-        //Po sios dalies as galiu pasiekti kontrolerius
         RegistrationController registrationController = fxmlLoader.getController();
-        registrationController.setData(entityManagerFactory, false);
         Scene scene = new Scene(parent);
         Stage stage = (Stage) loginField.getScene().getWindow();
         stage.setTitle("Shop");

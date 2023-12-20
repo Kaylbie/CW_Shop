@@ -11,15 +11,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class DisplayOrderWindowController implements Initializable {
 
@@ -88,7 +84,6 @@ public class DisplayOrderWindowController implements Initializable {
         orderManagerLabel.setText("Accepted by: " + managerName);
         orderTotalQuantityLabel.setText("Total Quantity: " + cart.getItemCount());
 
-        // Assuming cart.getUser() returns a Customer object
         Customer customer = (Customer) cart.getUser();
         if (customer != null) {
             customerNameLabel.setText("Customer: " + customer.getName()+" "+customer.getSurname());
@@ -139,11 +134,8 @@ public class DisplayOrderWindowController implements Initializable {
                 cart.setAttentionRequired(true);
                 customHib.update(cart);
             }
-            // Clear the text area after sending the message
             messageTextField.clear();
             loadMessagesForCart();
-            // Optionally, update the UI to display the new message
-            // loadCartData(); // This will reload all data including messages
 
         } catch (Exception e) {
             e.printStackTrace();

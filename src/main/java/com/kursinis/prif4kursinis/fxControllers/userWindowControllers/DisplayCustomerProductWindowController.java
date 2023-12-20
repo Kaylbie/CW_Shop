@@ -2,6 +2,7 @@ package com.kursinis.prif4kursinis.fxControllers.userWindowControllers;
 import java.util.List;
 
 import com.kursinis.prif4kursinis.StartGui;
+import com.kursinis.prif4kursinis.fxControllers.JavaFxCustomUtils;
 import com.kursinis.prif4kursinis.fxControllers.windowControllers.ProductUpdateCallback;
 import com.kursinis.prif4kursinis.hibernateControllers.CustomHib;
 import com.kursinis.prif4kursinis.model.Comment;
@@ -29,7 +30,7 @@ public class DisplayCustomerProductWindowController implements Initializable {
     @FXML private TextField commentTitleField;
     @FXML private TextArea commentBodyField;
     @FXML private Button deleteButton, visibilityButton, updateButton;
-    @FXML private TreeView<Comment> commentTreeView; // Replace ListView with TreeView
+    @FXML private TreeView<Comment> commentTreeView;
 
     private Product product;
     private EntityManagerFactory entityManagerFactory;
@@ -49,10 +50,10 @@ public class DisplayCustomerProductWindowController implements Initializable {
         this.product=product;
         this.currentUser= currentUser;
         productNameLabel.setText(product.getTitle());
-        productCodeLabel.setText(product.getCode()); // Replace getCode() with your actual method
-        productPriceLabel.setText("Price: $" + product.getPrice()); // Replace getPrice() with your actual method
+        productCodeLabel.setText(product.getCode());
+        productPriceLabel.setText("Price: $" + product.getPrice());
         updateRating();
-        String imagePath = "/com/kursinis/prif4kursinis/images/" + product.getPhotoName(); // Replace getImageName() with your actual method
+        String imagePath = "/com/kursinis/prif4kursinis/images/" + product.getPhotoName();
         if (imagePath != null && !imagePath.isEmpty()) {
             Image image = new Image(getClass().getResourceAsStream(imagePath));
             productImageView.setImage(image);
@@ -130,10 +131,11 @@ public class DisplayCustomerProductWindowController implements Initializable {
     }
 
     public void saveRating(ActionEvent actionEvent) {
+        JavaFxCustomUtils customUtils = new JavaFxCustomUtils();
         product.setRatingCount(product.getRatingCount()+1);
         product.setRating(product.getRating()+ratingSlider.getValue());
         customHib.update(product);
-        //showAlert("Success", "Product updated successfully.");
+        customUtils.generateAlert(Alert.AlertType.INFORMATION, "Rating", "Rating saved", "Rating saved successfully");
         updateRating();
     }
     private void updateRating() {

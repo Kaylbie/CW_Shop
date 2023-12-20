@@ -21,7 +21,6 @@ public class CartStatistics {
                 case "Closed":
                     closedCount++;
                     break;
-                // Add more cases if there are other statuses
             }
         }
     }

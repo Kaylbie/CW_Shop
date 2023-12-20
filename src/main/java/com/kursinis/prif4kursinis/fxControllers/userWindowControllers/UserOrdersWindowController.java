@@ -77,7 +77,6 @@ public class UserOrdersWindowController implements Initializable {
             orderViewModels.add(new OrderViewModel(cart.getId(), cart.getTotal(), cart.getItemCount(), managerName, cart.getStatus()));
         }
 
-        // Set the ObservableList of OrderViewModels to the TableView
         ordersTableView.setItems(orderViewModels);
         setupCancelOrderButton();
     }
@@ -97,7 +96,6 @@ public class UserOrdersWindowController implements Initializable {
                     Cart cart = customHib.findCartById(orderViewModel.getId()); // Assuming OrderViewModel has a getCartId method
 
                     if (cart != null) {
-                        // Handle the cancel action
                         cart.setStatus("Cancelled");
                         customHib.update(cart);
                         showAlert("Order Cancelled", "Order has been cancelled.");
@@ -146,8 +144,6 @@ public class UserOrdersWindowController implements Initializable {
             ordersTableView.getItems().clear();
             ordersTableView.setItems(orderViewModels);
         } else {
-            // Handle the case where no status is selected or the selected status is invalid
-            //showAlert("Filter Error", "Please select a valid status to filter.");
         }
         setupCancelOrderButton();
     }
@@ -175,7 +171,7 @@ public class UserOrdersWindowController implements Initializable {
 
 
                 } catch (IOException e) {
-                    e.printStackTrace(); // Handle exceptions appropriately
+                    e.printStackTrace();
                 }
             }
         }

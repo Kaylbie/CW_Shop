@@ -93,11 +93,9 @@ public class UserProductNodeController implements Initializable {
                     cart.getItems().add(newItem);
                 }
 
-                // Update the cart total
                 double newTotal = cart.getTotal() + product.getPrice();
                 cart.setTotal(newTotal);
 
-                // Save the updated cart
                 customHib.update(cart);
                 customHib.commitTransaction();
             } else {
@@ -111,10 +109,8 @@ public class UserProductNodeController implements Initializable {
     }
 
     private Cart findOrCreateActiveCartForUser(User user) {
-        // Try to find an existing active cart for the user
         Cart activeCart = customHib.findActiveCartByUserId(user.getId());
         if (activeCart == null) {
-            // Create a new cart if no active cart exists
             activeCart = new Cart();
             activeCart.setUser(user);
             activeCart.setDateCreated(LocalDate.now());
@@ -122,7 +118,7 @@ public class UserProductNodeController implements Initializable {
             activeCart.setItems(new ArrayList<>());
             activeCart.setTotal(0.0);
             activeCart.setItemCount(0);
-            customHib.create(activeCart); // Assuming CustomHib has a create method
+            customHib.create(activeCart);
         }
         return activeCart;
     }

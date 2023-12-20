@@ -81,7 +81,7 @@ public class OrderWindowController implements Initializable  {
     }
 
     private boolean isCartMatchingDateRange(Cart cart, LocalDate startDate, LocalDate endDate) {
-        LocalDate cartDate = cart.getDateCreated(); // Assuming getDateCreated() returns a LocalDate
+        LocalDate cartDate = cart.getDateCreated();
         if (startDate == null && endDate == null) {
             return true; // No date filter applied
         }
@@ -91,7 +91,7 @@ public class OrderWindowController implements Initializable  {
         if (endDate != null && cartDate.isAfter(endDate)) {
             return false; // Cart date is after the end date
         }
-        return true; // Cart date is within the range
+        return true;
     }
     private boolean isCartMatchingQuery(Cart cart, String query) {
         return String.valueOf(cart.getId()).startsWith(query);
@@ -99,7 +99,7 @@ public class OrderWindowController implements Initializable  {
 
     private boolean isCartMatchingStatus(Cart cart, String status) {
         if ("All".equalsIgnoreCase(status)) {
-            return true; // Ignore status filter if "All" is selected
+            return true;
         }
         return cart.getStatus().equalsIgnoreCase(status);
     }
@@ -152,8 +152,6 @@ public class OrderWindowController implements Initializable  {
             if (!isO1Open && isO2Open) {
                 return 1;
             }
-
-            // Finally, sort by other statuses
             return o1.getStatus().compareTo(o2.getStatus());
         };
 

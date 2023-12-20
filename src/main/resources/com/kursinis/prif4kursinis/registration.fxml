@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.geometry.HPos?>
-<?import javafx.geometry.VPos?>
 <GridPane alignment="CENTER" hgap="10" style="-fx-padding: 20;" vgap="10" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kursinis.prif4kursinis.fxControllers.regLog.RegistrationController">
     <columnConstraints>
         <ColumnConstraints hgrow="NEVER" minWidth="10" prefWidth="100" />
         <ColumnConstraints hgrow="ALWAYS" minWidth="10" prefWidth="100" />
     </columnConstraints>
-    <Label text="REGISTER" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" style="-fx-font-size: 27;">
+    <Label style="-fx-font-size: 27;" text="REGISTER" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0">
         <GridPane.halignment>
-            <HPos fx:constant="CENTER"/>
+            <HPos fx:constant="CENTER" />
         </GridPane.halignment>
         <GridPane.valignment>
-            <VPos fx:constant="CENTER"/>
+            <VPos fx:constant="CENTER" />
         </GridPane.valignment>
     </Label>
     <!-- Row 0 -->
@@ -38,29 +37,45 @@
     <Label text="Enter surname" GridPane.columnIndex="0" GridPane.rowIndex="5" />
     <TextField fx:id="surnameField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-    <!-- Additional Fields... -->
-    <!-- Customize further rows as needed -->
+    <!-- Row for Address -->
+    <Label text="Enter address" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+    <TextField fx:id="addressField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
-    <!-- Buttons -->
-    <Button text="Create User" onAction="#createUser" GridPane.columnIndex="1" GridPane.rowIndex="10">
+    <!-- Row for Card Number -->
+    <Label text="Enter card number" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+    <TextField fx:id="cardNumberField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+    <!-- Buttons Row -->
+    <Button onAction="#createUser" text="Create User" GridPane.columnIndex="1" GridPane.rowIndex="10">
         <GridPane.halignment>
-            <HPos fx:constant="RIGHT"/>
+            <HPos fx:constant="RIGHT" />
         </GridPane.halignment>
     </Button>
-    <Button text="Return" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
+    <Button onAction="#returnToLogin" text="Return" GridPane.columnIndex="0" GridPane.rowIndex="10" />
 
-   <rowConstraints>
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-   </rowConstraints>
+
+
+    <!-- Buttons -->
+    <Button onAction="#createUser" text="Create User" GridPane.columnIndex="1" GridPane.rowIndex="10">
+        <GridPane.halignment>
+            <HPos fx:constant="RIGHT" />
+        </GridPane.halignment>
+    </Button>
+    <Button onAction="#returnToLogin" text="Return" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+
+    <rowConstraints>
+        <!-- Add constraints for each row as needed -->
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+    </rowConstraints>
     <!-- Customize with additional labels, text fields, checkboxes, etc., as needed -->
 </GridPane>

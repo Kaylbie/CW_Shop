@@ -1,6 +1,7 @@
 package com.kursinis.prif4kursinis.fxControllers.createControllers;
 
 import com.kursinis.prif4kursinis.StartGui;
+import com.kursinis.prif4kursinis.fxControllers.JavaFxCustomUtils;
 import com.kursinis.prif4kursinis.hibernateControllers.CustomHib;
 import com.kursinis.prif4kursinis.hibernateControllers.UserHib;
 import com.kursinis.prif4kursinis.model.Customer;
@@ -13,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -77,29 +79,24 @@ public class EditUserWindowController implements Initializable {
         boolean typeChanged = !(editableUser.getClass().getSimpleName().equals(selectedType));
 
         if (typeChanged) {
-            // Delete the old user
             entityManager.remove(editableUser);
 
-            // Create a new user of the selected type
             User newUser;
             if (selectedType.equals("Customer")) {
                 newUser = new Customer();
-            } else { // Assuming the other type is Manager
+            } else {
                 newUser = new Manager();
             }
-            // Copy common fields from editableUser to newUser
             newUser.setLogin(usernameField.getText());
-            newUser.setPassword(passwordField.getText()); // Handle with care
+            newUser.setPassword(passwordField.getText());
             newUser.setName(nameField.getText());
             newUser.setSurname(surnameField.getText());
             if(editableUser instanceof Manager) {
                 ((Manager) editableUser).setAdmin(isAdmin);
             }
 
-            // Persist the new user
             entityManager.persist(newUser);
         } else {
-            // If the type hasn't changed, just update the existing user
             editableUser.setLogin(usernameField.getText());
             editableUser.setPassword(passwordField.getText());
             editableUser.setName(nameField.getText());
@@ -112,8 +109,8 @@ public class EditUserWindowController implements Initializable {
         }
 
         entityManager.getTransaction().commit();
-
-        // Close the window
+        JavaFxCustomUtils customUtils = new JavaFxCustomUtils();
+        customUtils.generateAlert(Alert.AlertType.INFORMATION, "User saved", "User saved", "User saved successfully");
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
     }

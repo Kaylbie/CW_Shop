@@ -1,7 +1,6 @@
 package com.kursinis.prif4kursinis.fxControllers.windowControllers;
 
 import com.kursinis.prif4kursinis.StartGui;
-import com.kursinis.prif4kursinis.fxControllers.userWindowControllers.DisplayCustomerProductWindowController;
 import com.kursinis.prif4kursinis.hibernateControllers.CustomHib;
 import com.kursinis.prif4kursinis.model.Cart;
 import com.kursinis.prif4kursinis.model.Manager;
