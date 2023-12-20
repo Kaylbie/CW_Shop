@@ -138,7 +138,7 @@ public class UserProductNodeController implements Initializable {
             Parent root = fxmlLoader.load();
 
             DisplayCustomerProductWindowController controller = fxmlLoader.getController();
-            controller.setProductData(product);
+            controller.setProductData(product, currentUser);
             controller.setAdminButtonsVisible(false);
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);

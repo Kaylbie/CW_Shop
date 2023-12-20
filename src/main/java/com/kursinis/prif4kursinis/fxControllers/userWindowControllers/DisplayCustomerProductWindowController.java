@@ -6,6 +6,7 @@ import com.kursinis.prif4kursinis.fxControllers.windowControllers.ProductUpdateC
 import com.kursinis.prif4kursinis.hibernateControllers.CustomHib;
 import com.kursinis.prif4kursinis.model.Comment;
 import com.kursinis.prif4kursinis.model.Product;
+import com.kursinis.prif4kursinis.model.User;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,6 +36,7 @@ public class DisplayCustomerProductWindowController implements Initializable {
     private EntityManagerFactory entityManagerFactory;
     private Product editableProduct;
     private CustomHib customHib;
+    private User currentUser;
     @FXML private Pane adminDashboardPane;
 
     @Override
@@ -42,8 +44,9 @@ public class DisplayCustomerProductWindowController implements Initializable {
         entityManagerFactory = StartGui.getEntityManagerFactory();
         customHib = new CustomHib(entityManagerFactory);
     }
-    public void setProductData(Product product) {
+    public void setProductData(Product product, User currentUser) {
         this.product=product;
+        this.currentUser= currentUser;
         productNameLabel.setText(product.getTitle());
         productCodeLabel.setText(product.getCode()); // Replace getCode() with your actual method
         productPriceLabel.setText("Price: $" + product.getPrice()); // Replace getPrice() with your actual method
@@ -62,7 +65,7 @@ public class DisplayCustomerProductWindowController implements Initializable {
     }
 
     private void loadCommentTree(int productId) {
-        TreeItem<Comment> rootItem = new TreeItem<>(new Comment("Root", "", null));
+        TreeItem<Comment> rootItem = new TreeItem<>(new Comment(null,"Root", "", null));
         rootItem.setExpanded(true);
 
         List<Comment> topLevelComments = customHib.getTopLevelComments(productId);
@@ -84,7 +87,7 @@ public class DisplayCustomerProductWindowController implements Initializable {
     }
 
     public void createComment(ActionEvent actionEvent) {
-        Comment newComment = new Comment(commentTitleField.getText(), commentBodyField.getText(), product);
+        Comment newComment = new Comment(currentUser, commentTitleField.getText(), commentBodyField.getText(), product);
         TreeItem<Comment> selectedTreeItem = commentTreeView.getSelectionModel().getSelectedItem();
         if (selectedTreeItem != null) {
             Comment parentComment = selectedTreeItem.getValue();

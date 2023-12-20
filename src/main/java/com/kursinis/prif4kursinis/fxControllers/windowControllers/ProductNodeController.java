@@ -5,6 +5,7 @@ import com.kursinis.prif4kursinis.fxControllers.createControllers.CreateProductC
 import com.kursinis.prif4kursinis.fxControllers.userWindowControllers.DisplayCustomerProductWindowController;
 import com.kursinis.prif4kursinis.hibernateControllers.CustomHib;
 import com.kursinis.prif4kursinis.model.Product;
+import com.kursinis.prif4kursinis.model.User;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,6 +41,7 @@ public class ProductNodeController implements Initializable {
     private Product product;
     private EntityManagerFactory entityManagerFactory;
     private Product editableProduct;
+    private User currentUser;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -48,9 +50,10 @@ public class ProductNodeController implements Initializable {
     public void setUpdateCallback(ProductUpdateCallback updateCallback) {
         this.updateCallback = updateCallback;
     }
-    public void setProductData(Product product) {
+    public void setProductData(Product product, User currentUser) {
 
         this.product=product;
+        this.currentUser= currentUser;
         productNameLabel.setText(product.getTitle());
         productCodeLabel.setText(product.getCode()); // Replace getCode() with your actual method
         productPriceLabel.setText("Price: $" + product.getPrice()); // Replace getPrice() with your actual method
@@ -113,7 +116,7 @@ public class ProductNodeController implements Initializable {
             Parent root = fxmlLoader.load();
 
             DisplayCustomerProductWindowController controller = fxmlLoader.getController();
-            controller.setProductData(product);
+            controller.setProductData(product, currentUser);
             controller.setAdminButtonsVisible(true);
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);

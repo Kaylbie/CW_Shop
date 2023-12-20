@@ -3,6 +3,7 @@ import com.kursinis.prif4kursinis.StartGui;
 import com.kursinis.prif4kursinis.hibernateControllers.CustomHib;
 import com.kursinis.prif4kursinis.hibernateControllers.GenericHib;
 import com.kursinis.prif4kursinis.model.Product;
+import com.kursinis.prif4kursinis.model.User;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,40 +24,23 @@ public class ProductsWindowController implements Initializable, ProductUpdateCal
     public ScrollPane productsScrollPane;
     @FXML
     public VBox productsVBox;
+    private User currentUser;
 
     private EntityManagerFactory entityManagerFactory;
     private CustomHib customHib;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         entityManagerFactory = StartGui.getEntityManagerFactory();
-        refreshNodes(null);
     }
     @Override
     public void onProductUpdated() {
         refreshNodes();
     }
-//    private void refreshNodes() {
-//        productsVBox.getChildren().clear();
-//
-//        // Use GenericHib to get product data
-//        GenericHib productHib = new GenericHib(entityManagerFactory);
-//        List<Product> productList = productHib.getAllRecords(Product.class);
-//
-//        for (Product product : productList) {
-//            try {
-//                FXMLLoader loader = new FXMLLoader(StartGui.class.getResource("nodes/productNode.fxml"));
-//                Node node = loader.load();
-//                ProductNodeController controller = loader.getController();
-//                controller.setProductData(product);
-//                controller.setUpdateCallback(this);
-//                productsVBox.getChildren().add(node);
-//            } catch (IOException e) {
-//                e.printStackTrace(); // Handle exceptions appropriately
-//            }
-//        }
-//    }
 
-
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+        refreshNodes(null);
+    }
     public void updateProductTabs(MouseEvent mouseEvent) {
         refreshNodes(null);
     }
@@ -82,7 +66,7 @@ public class ProductsWindowController implements Initializable, ProductUpdateCal
                     FXMLLoader loader = new FXMLLoader(StartGui.class.getResource("nodes/productNode.fxml"));
                     Node node = loader.load();
                     ProductNodeController controller = loader.getController();
-                    controller.setProductData(product);
+                    controller.setProductData(product, currentUser);
                     controller.setUpdateCallback(this);
                     productsVBox.getChildren().add(node);
                 } catch (IOException e) {
@@ -102,7 +86,7 @@ public class ProductsWindowController implements Initializable, ProductUpdateCal
                     FXMLLoader loader = new FXMLLoader(StartGui.class.getResource("nodes/productNode.fxml"));
                     Node node = loader.load();
                     ProductNodeController controller = loader.getController();
-                    controller.setProductData(product);
+                    controller.setProductData(product, currentUser);
                     controller.setUpdateCallback(this);
                     productsVBox.getChildren().add(node);
                 } catch (IOException e) {

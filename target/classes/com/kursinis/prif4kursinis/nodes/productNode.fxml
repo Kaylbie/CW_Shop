@@ -22,6 +22,7 @@
             <Button fx:id="visibilityButton" onAction="#handleVisibilityAction" style="-fx-font-size: 14; -fx-background-color: transparent;" text="Visible" textFill="WHITE" />
             <Button fx:id="editButton" onAction="#handleEditAction" style="-fx-font-size: 14; -fx-background-color: transparent;" text="Edit" textFill="WHITE" />
             <Button fx:id="deleteButton" onAction="#handleDeleteAction" style="-fx-font-size: 14; -fx-background-color: transparent;" text="Delete" textFill="WHITE" />
+         <Button fx:id="viewButton" layoutX="131.0" layoutY="10.0" onAction="#handleProductView" style="-fx-font-size: 14; -fx-background-color: transparent;" text="View" textFill="WHITE" />
          <padding>
             <Insets bottom="5.0" />
          </padding>

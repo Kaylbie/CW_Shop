@@ -32,6 +32,9 @@ public class Comment {
     @ManyToOne
     private Product product;
 
+    @ManyToOne
+    private User user;
+
     // Constructors, getters, setters...
 
     public List<Comment> getReplies() {
@@ -42,7 +45,8 @@ public class Comment {
         this.replies = replies;
     }
 
-    public Comment(String commentTitle, String commentBody, Product product) {
+    public Comment(User user, String commentTitle, String commentBody, Product product) {
+        this.user=user;
         this.commentTitle = commentTitle;
         this.commentBody = commentBody;
         this.dateCreated = LocalDate.now();
@@ -57,6 +61,6 @@ public class Comment {
     }
     @Override
     public String toString() {
-        return commentTitle + ": " + dateCreated;
+        return user.getName()+" wrote "+commentTitle + " on " + dateCreated;
     }
 }

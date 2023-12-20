@@ -117,11 +117,11 @@ public class MainWindowController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //loadPane("productsWindow");
         productsPageButtons.setVisible(true);
         mainWindowButtons.setVisible(false);
         orderPageButtons.setVisible(false);
         ProductsWindowController controller = fxmlLoader.getController();
+        controller.setCurrentUser(currentUser);
         setProductsWindowController(controller);
     }
     public void loadUsersPane(ActionEvent actionEvent) {
