@@ -40,6 +40,7 @@ public class MainWindowController implements Initializable {
     @FXML
     public VBox mainWindowButtons;
     @FXML public VBox userWindowButtons;
+    @FXML private VBox managerDashboardButtons;
     @FXML
     public VBox productsPageButtons;
     @FXML
@@ -80,6 +81,7 @@ public class MainWindowController implements Initializable {
         orderPageButtons.setVisible(false);
         productsPageButtons.setVisible(false);
         userWindowButtons.setVisible(false);
+        managerDashboardButtons.setVisible(false);
     }
 
     private void loadPane(String paneName){
@@ -112,15 +114,30 @@ public class MainWindowController implements Initializable {
     }
     public void loadDashboardPane(ActionEvent actionEvent) {
         loadPane("dashboardWindow");
-        mainWindowButtons.setVisible(true);
+        if(currentUser instanceof Manager && ((Manager) currentUser).isAdmin()){
+            mainWindowButtons.setVisible(true);
+            managerDashboardButtons.setVisible(false);
+        }
+        else{
+            mainWindowButtons.setVisible(false);
+            managerDashboardButtons.setVisible(true);
+        }
         orderPageButtons.setVisible(false);
         productsPageButtons.setVisible(false);
         userWindowButtons.setVisible(false);
 
+
     }
     private void loadDashboardPane(){
         loadPane("dashboardWindow");
-        mainWindowButtons.setVisible(true);
+        if(currentUser instanceof Manager && ((Manager) currentUser).isAdmin()) {
+            mainWindowButtons.setVisible(true);
+            managerDashboardButtons.setVisible(false);
+        }
+        else{
+            mainWindowButtons.setVisible(false);
+            managerDashboardButtons.setVisible(true);
+        }
         orderPageButtons.setVisible(false);
         productsPageButtons.setVisible(false);
         userWindowButtons.setVisible(false);
@@ -191,18 +208,16 @@ public class MainWindowController implements Initializable {
     private void loadCustomerWindows(){
         userWindowButtons.setVisible(true);
     }
-    private void loadManagerAdminWindows(){
+    private void loadManagerWindows(){
         loadDashboardPane();
     }
-    private void loadManagerWindows(){
 
-    }
     private void limitAccess() {
         if(currentUser instanceof Customer){
             loadCustomerWindows();
         }
         else if(currentUser instanceof Manager && ((Manager) currentUser).isAdmin()){
-            loadManagerAdminWindows();
+            loadManagerWindows();
         }
         else{
             loadManagerWindows();
@@ -212,10 +227,6 @@ public class MainWindowController implements Initializable {
     private void loadData(){
         nameSurnameLabel.setText(currentUser.getName()+" "+currentUser.getSurname());
         uidLabel.setText("UID: "+currentUser.getId());
-        setWindowData();
-    }
-    private EntityManagerFactory setWindowData(){
-        return entityManagerFactory;
     }
     public void setProductsWindowController(ProductsWindowController controller) {
         this.productsWindowController = controller;

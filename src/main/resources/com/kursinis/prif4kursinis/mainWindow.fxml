@@ -65,7 +65,59 @@
          </VBox>
            <!-- Add more buttons as needed -->
        </VBox>
-      <VBox fx:id="orderPageButtons" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" prefHeight="750.0" prefWidth="270.0" style="-fx-background-color: #333333;">
+      <VBox fx:id="managerDashboardButtons" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" prefHeight="750.0" prefWidth="270.0" style="-fx-background-color: #333333;">
+         <children>
+            <Pane prefHeight="268.0" prefWidth="270.0" visible="false">
+               <children>
+                  <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="240.0" prefWidth="268.0" spacing="30.0">
+                     <children>
+                        <Circle fill="#97999a" radius="53.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Label text="Name Surname" textFill="WHITE">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </Pane>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Button alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="60.0" mnemonicParsing="false" onAction="#loadDashboardPane" prefHeight="60.0" prefWidth="339.0" styleClass="dashBtn" text="DASHBOARD" textFill="WHITE">
+                     <padding>
+                        <Insets left="50.0" />
+                     </padding>
+                  </Button>
+                  <Button alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="60.0" mnemonicParsing="false" onAction="#loadOrderPane" prefHeight="60.0" prefWidth="339.0" styleClass="dashBtn" text="ORDERS" textFill="WHITE">
+                     <padding>
+                        <Insets left="50.0" />
+                     </padding>
+                  </Button>
+                  <Button alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="60.0" mnemonicParsing="false" onAction="#loadProductCataloguePane" prefHeight="60.0" prefWidth="339.0" styleClass="dashBtn" text="PRODUCT CATALOGUE" textFill="WHITE">
+                     <padding>
+                        <Insets left="50.0" />
+                     </padding>
+                  </Button>
+                  <Button alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="60.0" mnemonicParsing="false" onAction="#loadMessagesPane" prefHeight="60.0" prefWidth="339.0" styleClass="dashBtn" text="MESSAGES" textFill="WHITE">
+                     <padding>
+                        <Insets left="50.0" />
+                     </padding>
+                  </Button>
+                  <Button alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="60.0" mnemonicParsing="false" onAction="#loadSettingsPane" prefHeight="60.0" prefWidth="339.0" styleClass="dashBtn" text="SETTINGS" textFill="WHITE">
+                     <padding>
+                        <Insets left="50.0" />
+                     </padding>
+                  </Button>
+                  <Button fx:id="logoutButton11" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="60.0" mnemonicParsing="false" onAction="#logOut" prefHeight="60.0" prefWidth="339.0" styleClass="dashBtn" text="LOG OUT" textFill="WHITE">
+                     <padding>
+                        <Insets left="50.0" />
+                     </padding>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+      <VBox fx:id="orderPageButtons" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" prefHeight="750.0" prefWidth="270.0" style="-fx-background-color: #333333;" visible="false">
          <children>
             <Pane prefHeight="268.0" prefWidth="270.0" visible="false">
                <children>
