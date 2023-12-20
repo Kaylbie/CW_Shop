@@ -2,6 +2,7 @@ package com.kursinis.prif4kursinis.fxControllers.userWindowControllers;
 
 import com.kursinis.prif4kursinis.StartGui;
 import com.kursinis.prif4kursinis.fxControllers.createControllers.EditUserWindowController;
+import com.kursinis.prif4kursinis.fxControllers.windowControllers.DisplayOrderWindowController;
 import com.kursinis.prif4kursinis.hibernateControllers.CustomHib;
 import com.kursinis.prif4kursinis.model.Cart;
 import com.kursinis.prif4kursinis.model.User;
@@ -16,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -60,7 +62,11 @@ public class UserOrdersWindowController implements Initializable {
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         managerNameColumn.setCellValueFactory(new PropertyValueFactory<>("managerName"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-
+        ordersTableView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) { // Detect double-click
+                openOrderDetailsWindow();
+            }
+        });
     }
     private void loadOrders() {
         List<Cart> orders = customHib.findCartsByUserIdAndStatuses(currentUser.getId(), statuses); // Implement this method in CustomHib
@@ -148,5 +154,30 @@ public class UserOrdersWindowController implements Initializable {
 
     public void onReset(ActionEvent actionEvent) {
         loadOrders();
+    }
+
+    public void openOrderDetailsWindow() {
+        OrderViewModel selectedOrderViewModel = ordersTableView.getSelectionModel().getSelectedItem();
+        if (selectedOrderViewModel != null) {
+            Cart selectedCart = customHib.findCartById(selectedOrderViewModel.getId());
+
+            if (selectedCart != null) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("userWindow/displayOrderWindow.fxml"));
+                    Parent root = fxmlLoader.load();
+                    DisplayOrderWindowController controller = fxmlLoader.getController();
+                    controller.setProductData(selectedCart, currentUser); // Assuming setCartData method exists in your controller
+                    Stage stage = new Stage();
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.setTitle("Order Nr. " + selectedCart.getId());
+                    stage.setScene(new Scene(root));
+                    stage.showAndWait();
+
+
+                } catch (IOException e) {
+                    e.printStackTrace(); // Handle exceptions appropriately
+                }
+            }
+        }
     }
 }

@@ -160,6 +160,22 @@ public class CustomHib extends GenericHib {
         }
         return comments;
     }
+    public List<Message> getMessagesForCart(int cartId) {
+        EntityManager em = null;
+        List<Message> messages = null;
+        try {
+            em = entityManagerFactory.createEntityManager(); // Assuming you have an EntityManagerFactory instance
+            TypedQuery<Message> query = em.createQuery(
+                    "SELECT m FROM Message m WHERE m.cart.id = :cartId ORDER BY m.dateCreated", Message.class);
+            query.setParameter("cartId", cartId);
+            messages = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) em.close();
+        }
+        return messages;
+    }
     public Cart findCartById(int cartId) {
         EntityManager em = null;
         Cart cart = null;

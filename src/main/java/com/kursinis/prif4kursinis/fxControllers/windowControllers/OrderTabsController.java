@@ -1,5 +1,7 @@
 package com.kursinis.prif4kursinis.fxControllers.windowControllers;
 
+import com.kursinis.prif4kursinis.StartGui;
+import com.kursinis.prif4kursinis.fxControllers.userWindowControllers.DisplayCustomerProductWindowController;
 import com.kursinis.prif4kursinis.hibernateControllers.CustomHib;
 import com.kursinis.prif4kursinis.model.Cart;
 import com.kursinis.prif4kursinis.model.Manager;
@@ -7,11 +9,18 @@ import com.kursinis.prif4kursinis.model.User;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.SVGPath;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class OrderTabsController implements Initializable {
     private EntityManagerFactory entityManagerFactory;
@@ -99,7 +108,20 @@ public class OrderTabsController implements Initializable {
         closeButton.setVisible(true);
     }
     public void openOrderWindow(MouseEvent mouseEvent) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(StartGui.class.getResource("userWindow/displayOrderWindow.fxml"));
+            Parent root = fxmlLoader.load();
 
+            DisplayOrderWindowController controller = fxmlLoader.getController();
+            controller.setProductData(cart, currentUser);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Order Nr. "+ cart.getId());
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void handleOpenActionButton(ActionEvent actionEvent) {
@@ -121,6 +143,4 @@ public class OrderTabsController implements Initializable {
         customHib.update(cart);
         loadOrderData();
     }
-
-
 }

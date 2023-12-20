@@ -26,7 +26,7 @@
         <Label layoutX="50.0" layoutY="30.0" style="-fx-font-size: 24; -fx-font-weight: bold;" text="Your Orders" />
 
         <!-- Orders Table -->
-        <TableView fx:id="ordersTableView" layoutX="50.0" layoutY="70.0" prefHeight="600.0" prefWidth="800.0">
+        <TableView fx:id="ordersTableView"  layoutX="50.0" layoutY="70.0" prefHeight="600.0" prefWidth="800.0">
             <columns>
                 <TableColumn fx:id="idColumn" minWidth="50.0" text="Id" />
                 <!-- Total Price Column -->

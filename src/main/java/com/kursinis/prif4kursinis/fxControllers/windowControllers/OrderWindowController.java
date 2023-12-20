@@ -159,8 +159,6 @@ public class OrderWindowController implements Initializable  {
 
         Collections.sort(orders, comparator);
     }
-
-
     private boolean isOrderOlderThanOneDay(Cart cart) {
         LocalDate oneDayAgo = LocalDate.now().minusDays(1);
         return cart.getDateCreated().isBefore(oneDayAgo);
