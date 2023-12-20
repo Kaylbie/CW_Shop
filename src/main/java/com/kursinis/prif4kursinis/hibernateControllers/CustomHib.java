@@ -8,8 +8,11 @@ import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CustomHib extends GenericHib {
     private EntityManagerFactory entityManagerFactory;
@@ -101,6 +104,66 @@ public class CustomHib extends GenericHib {
             if (em != null) em.close();
         }
         return activeCart;
+    }
+    public double getTotalRevenue() {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        try {
+            String queryStr = "SELECT SUM(c.total) FROM Cart c";
+            Query query = em.createQuery(queryStr);
+            return (Double) query.getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
+    public int getTotalSalesCount() {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        try {
+            String queryStr = "SELECT COUNT(c) FROM Cart c";
+            Query query = em.createQuery(queryStr);
+            return ((Long) query.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+    public int getNumberOfOrders() {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        try {
+            String queryStr = "SELECT COUNT(c) FROM Cart c";
+            Query query = em.createQuery(queryStr);
+            return ((Long) query.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+    public Map<LocalDate, Double> getTotalSalesForEachDayLast30Days() {
+        EntityManager em = null;
+        Map<LocalDate, Double> dailySales = new HashMap<>();
+        try {
+            em = entityManagerFactory.createEntityManager();
+            LocalDate startDate = LocalDate.now().minusDays(30);
+            LocalDate endDate = LocalDate.now();
+
+            String queryStr = "SELECT c.dateCreated, SUM(c.total) FROM Cart c " +
+                    "WHERE c.dateCreated BETWEEN :startDate AND :endDate AND c.status = 'Closed' " +
+                    "GROUP BY c.dateCreated ORDER BY c.dateCreated ASC";
+            TypedQuery<Object[]> query = em.createQuery(queryStr, Object[].class);
+            query.setParameter("startDate", startDate);
+            query.setParameter("endDate", endDate);
+
+            List<Object[]> resultList = query.getResultList();
+            for (Object[] result : resultList) {
+                LocalDate date = (LocalDate) result[0];
+                Double totalSales = (Double) result[1];
+                dailySales.put(date, totalSales);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+        return dailySales;
     }
     public List<Cart> findCartsByUserIdAndStatuses(int userId, List<String> statuses) {
         List<Cart> carts = new ArrayList<>();
