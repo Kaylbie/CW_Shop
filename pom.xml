@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.kursinis</groupId>
-    <artifactId>Prif4Kursinis</artifactId>
+    <artifactId>CWShop</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>Prif4Kursinis</name>
 
@@ -82,7 +82,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.kursinis.prif4kursinis/com.kursinis.prif4kursinis.HelloApplication
+                            <mainClass>com.kursinis.prif4kursinis/com.kursinis.cwshop.HelloApplication
                             </mainClass>
                         </configuration>
                     </execution>
